@@ -5,7 +5,8 @@ import java.util.ArrayList;
 public class QLearning {
 
 	private Casilla [][] tablero;
-	private double [][][] Q; //para cada casilla, almacena la recompensa de cada posible estado
+	private double [][][] Q; //para cada estado (casilla), almacena el aprendizaje por cada acción posible
+	private double [][] r; //para cada estado almacena una recompensa (sólo tendrá recompensa la meta)
 	private Casilla salida;
 	private Casilla meta ;
 	private Casilla casilla_actual;
@@ -41,7 +42,7 @@ public class QLearning {
 					//Q[i][j][k] = Math.random();
 	}
 	
-	
+	/* TODO cambiar el cáculo para utilizar una recompensa R, que se almacenará por cada estado */
 	/* PSEUDOCODIGO
 	 * Inicializar la tabla Q(s,a) (con 0's o valores aleatorios)
 	 * Repetir (por cada episodio)
@@ -69,8 +70,8 @@ public class QLearning {
 		
 		int acciones_posibles = 4;
         inicializaQ(limX, limY, acciones_posibles);
-        for(int j=0; j<acciones_posibles; j++) //INICIALIZAMOS LOS COSTES DE LA META A 100
-        	Q[meta.posX][meta.posY][j] = 100;
+        r = new double [limX][limY]; //inicializa r
+        r[meta.posX][meta.posY] = 100; //inicializamos la recompensa de llegar a la meta a 100
         
         //repetimos el experimento num_repeticiones veces
         for(int i=0; i<num_repeticiones; i++)
@@ -120,7 +121,7 @@ public class QLearning {
         		
         		//ejecutamos la accion, y actualizamos Q
         		//Q(s,a) = Q(s,a) + alpha( r + landa * max a'(Q(s', a')) - Q(s,a) )
-        		Q[this.casilla_actual.posX][this.casilla_actual.posY][sucesor_elegido.getAccion()] = Q_sa + alpha * (landa*Q_sa_prima - Q_sa);
+        		Q[this.casilla_actual.posX][this.casilla_actual.posY][sucesor_elegido.getAccion()] = Q_sa + alpha * (r[sucesor_elegido.getCasilla_final().posX][sucesor_elegido.getCasilla_final().posY] + landa*Q_sa_prima - Q_sa);
         		this.casilla_actual = sucesor_elegido.getCasilla_final();
         		System.out.println(this.casilla_actual.getPosX() + ", " + this.casilla_actual.getPosY());
         	}
