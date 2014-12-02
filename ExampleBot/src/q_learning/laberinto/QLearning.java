@@ -1,5 +1,6 @@
 package q_learning.laberinto;
 
+import java.awt.Color;
 import java.util.ArrayList;
 
 import q_learning.Casilla;
@@ -148,7 +149,30 @@ public class QLearning {
 	
 	public void buscaMejorCamino()
 	{
-		
+		this.casilla_actual = this.salida;
+		while(!this.casilla_actual.equals(this.meta))
+		{
+			//Busca cual es la acción con mayor Q
+			int acc_elegida = -1;
+			Casilla cas_final = null;
+			double Q_max = Double.MIN_VALUE;
+			ArrayList<Sucesor> sucesores = generaSucesores(this.casilla_actual);
+			
+			for(int suc=0; suc<sucesores.size(); suc++)
+			{
+				double Q_act = Q[this.casilla_actual.getPosX()][this.casilla_actual.getPosY()][sucesores.get(suc).getAccion()];
+				if(Q_act > Q_max)
+				{
+					Q_max = Q_act;
+					acc_elegida = sucesores.get(suc).getAccion();
+					cas_final = sucesores.get(suc).getCasilla_final();
+				}
+			}
+			
+			//ejecuta esa acción (cambia a esa casilla), y pinta la casilla de amarillo.
+			this.casilla_actual = cas_final;
+			this.casilla_actual.setBackground(Color.yellow);
+		}
 	}
 	
 	/**
