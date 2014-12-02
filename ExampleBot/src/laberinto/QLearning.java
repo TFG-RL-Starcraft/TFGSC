@@ -134,7 +134,7 @@ public class QLearning {
         {
             for(int j = 0; j < limX;j++)
             {
-            	tablero[i][j].setText(Double.toString(Q[i][j][0]) + " " + Double.toString(Q[i][j][1]) + " " + Double.toString(Q[i][j][2]) + " " + Double.toString(Q[i][j][3]));
+            	tablero[i][j].setText("UP: " + Double.toString(Q[i][j][0]) + ", RIGHT: " + Double.toString(Q[i][j][1]) + ", DOWN: " + Double.toString(Q[i][j][2]) + ", LEFT: " + Double.toString(Q[i][j][3]));
             }
         }
 	}

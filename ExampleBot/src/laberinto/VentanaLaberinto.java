@@ -102,6 +102,50 @@ public class VentanaLaberinto extends javax.swing.JFrame {
         meta = tablero[maxX-1][maxY-1];
         setMeta(meta);
         
+        /*
+         //TABLERO MÁS COMPLEJO
+        for(int y=0; y<maxY-1; y++)
+        {
+            setPared(tablero[1][y]);
+        }
+        for(int y=1; y<maxY; y++)
+        {
+            setPared(tablero[3][y]);
+        }
+
+        setPared(tablero[5][1]);
+        setPared(tablero[5][2]);
+        setPared(tablero[5][3]);
+        setPared(tablero[5][4]);
+        setPared(tablero[5][5]);
+        setPared(tablero[5][6]);
+        setPared(tablero[5][7]);
+        setPared(tablero[5][8]);
+        setPared(tablero[4][8]);
+        setPared(tablero[6][1]);
+        setPared(tablero[7][1]);
+        setPared(tablero[8][1]);
+        setPared(tablero[10][1]);
+        setPared(tablero[10][2]);
+        setPared(tablero[10][3]);
+        setPared(tablero[10][4]);
+        setPared(tablero[10][5]);
+        setPared(tablero[10][6]);
+        setPared(tablero[10][7]);
+        setPared(tablero[10][8]);
+        setPared(tablero[10][9]);
+        setPared(tablero[10][10]);
+        setPared(tablero[10][11]);
+        setPared(tablero[10][12]);
+        setPared(tablero[10][13]);
+        setPared(tablero[11][1]);
+        setPared(tablero[12][1]);
+        setPared(tablero[13][1]);
+        setPared(tablero[12][3]);
+        setPared(tablero[13][3]);
+        setPared(tablero[14][3]);*/
+        
+        
         for(int y=0; y<maxY-2; y++)
         {
             setPared(tablero[1][y]);

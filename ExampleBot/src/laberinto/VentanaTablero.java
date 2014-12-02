@@ -3,6 +3,10 @@ package laberinto;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 /**
@@ -19,9 +23,11 @@ public class VentanaTablero extends javax.swing.JFrame {
     public static final int xInicio = 150;
     public static final int yInicio = 50;
     
-    public static final int INICIO = 0;
-    public static final int META = 1;
-    public static final int PARED = 2;
+    public static final int VACIO = 0;
+    public static final int PARED = 1;
+    public static final int INICIO = 2;
+    public static final int META = 3;
+    
     public static  int paso ;
     
      private Casilla tablero[][];
@@ -47,6 +53,8 @@ public class VentanaTablero extends javax.swing.JFrame {
 
         lbPaso = new javax.swing.JLabel();
         btEmpezar = new javax.swing.JButton();
+        btSalvarLaberinto = new javax.swing.JButton();
+        btCargarLaberinto = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         btReset = new javax.swing.JButton();
         jTextFieldX = new javax.swing.JTextField();
@@ -61,6 +69,22 @@ public class VentanaTablero extends javax.swing.JFrame {
         btEmpezar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btEmpezarActionPerformed(evt);
+            }
+        });
+        
+        btSalvarLaberinto.setText("SALVAR LABERINTO");
+        btSalvarLaberinto.setEnabled(true);
+        btSalvarLaberinto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btSalvarLaberintoActionPerformed(evt);
+            }
+        });
+        
+        btCargarLaberinto.setText("CARGAR LABERINTO");
+        btCargarLaberinto.setEnabled(true);
+        btCargarLaberinto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+            	btCargarLaberintoActionPerformed(evt);
             }
         });
 
@@ -113,6 +137,10 @@ public class VentanaTablero extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btEmpezar)
                         .addGap(31, 31, 31)
+                        .addComponent(btSalvarLaberinto)
+                        .addGap(31, 31, 31)
+                        .addComponent(btCargarLaberinto)
+                        .addGap(31, 31, 31)
                         .addComponent(jLabel1))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(168, 168, 168)
@@ -125,6 +153,8 @@ public class VentanaTablero extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btEmpezar)
+                    .addComponent(btSalvarLaberinto)
+                    .addComponent(btCargarLaberinto)
                     .addComponent(jLabel1)
                     .addComponent(btReset)
                     .addComponent(jButton1))
@@ -149,8 +179,18 @@ public class VentanaTablero extends javax.swing.JFrame {
         btEmpezar.setEnabled(false);
         resolver();
     }//GEN-LAST:event_btEmpezarActionPerformed
+    
+    private void btSalvarLaberintoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btEmpezarActionPerformed
+        // TODO add your handling code here:
+        salvarLaberintoEnFichero();
+    }//GEN-LAST:event_btEmpezarActionPerformed
+    
+   private void btCargarLaberintoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btEmpezarActionPerformed
+        // TODO add your handling code here:
+        cargarLaberintoDesdeFichero();
+    }//GEN-LAST:event_btEmpezarActionPerformed
 
-    private void btResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btResetActionPerformed
+	private void btResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btResetActionPerformed
         reset();
         
     }//GEN-LAST:event_btResetActionPerformed
@@ -161,7 +201,12 @@ public class VentanaTablero extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        int x = Integer.valueOf(jTextFieldX.getText());
+        generarTablero();
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void generarTablero() {
+		// TODO Auto-generated method stub
+    	int x = Integer.valueOf(jTextFieldX.getText());
         int y = Integer.valueOf(jTextFieldY.getText());
         
         paso = INICIO;
@@ -239,9 +284,10 @@ public class VentanaTablero extends javax.swing.JFrame {
         jTextFieldX.setEnabled(false);
         jTextFieldY.setEnabled(false);
         btReset.setEnabled(true);
-    }//GEN-LAST:event_jButton1ActionPerformed
+	}
 
-    public void reset()
+
+	public void reset()
     {
         jLabel1.setText("Seleccione la casilla de inicio");
         paso = INICIO;
@@ -334,9 +380,137 @@ public class VentanaTablero extends javax.swing.JFrame {
     {
         return this.tablero[x][y];
     }
+    
+    private void salvarLaberintoEnFichero() {
+		
+    	FileWriter fichero = null;
+        PrintWriter pw = null;
+        try
+        {
+            fichero = new FileWriter("laberinto.txt");
+            pw = new PrintWriter(fichero);
+ 
+            
+            pw.println(maxX + "," + maxY);            
+            for(int j = 0; j < maxY;j++)
+            {
+                for(int i = 0; i < maxX ; i++)
+                {
+                	//guarda un 0 si es casilla normal, y 1 si es pared
+                	if(this.tablero[i][j].esPared())
+                		pw.print(PARED);
+                	else if(this.tablero[i][j].esInicio())
+                		pw.print(INICIO);
+                	else if(this.tablero[i][j].esMeta())
+                		pw.print(META);
+                	else
+                		pw.print(VACIO);
+                	
+                	if(i != maxX-1)
+                		pw.print(",");
+                	else
+                		pw.println();
+                }            
+            }
+
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+           try {
+           // Nuevamente aprovechamos el finally para 
+           // asegurarnos que se cierra el fichero.
+           if (null != fichero)
+              fichero.close();
+           } catch (Exception e2) {
+              e2.printStackTrace();
+           }
+        }
+    	
+    	
+    	
+	}
+    
+    private void cargarLaberintoDesdeFichero() {
+    	//borramos el laberinto anterior
+    	for(int j = 0; j < maxY;j++)
+        {
+            for(int i = 0; i < maxX ; i++)
+            {
+            	this.tablero[i][j].setEnabled(false);
+            	this.tablero[i][j].setVisible(false);
+            }            
+        }
+    	
+    	//leemos el fichero y generamos el nuevo laberinto
+    	FileReader fichero = null;
+    	BufferedReader br = null;
+        try
+        {
+            fichero = new FileReader("laberinto.txt");
+            br = new BufferedReader(fichero);
+ 
+            String linea;
+            linea=br.readLine();
+
+            //generamos un tablero de las dimensioes de la primera linea
+            String dim[] = linea.split(",");
+            jTextFieldX.setText(dim[0]);
+            jTextFieldY.setText(dim[1]);
+            
+            generarTablero(); //aquí genera el tablero y vuelve a dar valor a las variables locales
+            
+            //generamos el resto de casillas
+            int cont_Y = 0;
+            while((linea=br.readLine())!=null)
+            {
+            	String cas[] = linea.split(",");
+            	for(int i = 0; i < maxX ; i++)
+            	{
+            		if(Integer.parseInt(cas[i]) == PARED)
+            		{
+            			a.setPared(this.tablero[i][cont_Y], true);
+                        setPared(this.tablero[i][cont_Y], true);
+            		}
+                	else if(Integer.parseInt(cas[i]) == INICIO)
+                	{
+                        //inicio = this.tablero[i][cont_Y];
+                        //setInicio(inicio);
+                	}
+                	else if(Integer.parseInt(cas[i]) == META)
+                	{
+                		//meta = this.tablero[i][cont_Y];
+                        //setMeta(meta);
+                	}
+
+            	}
+            	cont_Y++;
+            }
+               
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+           try {
+           // Nuevamente aprovechamos el finally para 
+           // asegurarnos que se cierra el fichero.
+           if (null != fichero)
+              fichero.close();
+           } catch (Exception e2) {
+              e2.printStackTrace();
+           }
+        }
+    	
+    }
+    
+    
+    
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btEmpezar;
     private javax.swing.JButton btReset;
+    private javax.swing.JButton btSalvarLaberinto;
+    private javax.swing.JButton btCargarLaberinto;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
