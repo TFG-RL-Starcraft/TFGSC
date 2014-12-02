@@ -96,7 +96,7 @@ public class VentanaLaberinto extends javax.swing.JFrame {
         
         long end = System.currentTimeMillis();
         long res = end - start;
-        System.out.println("TIEMPO DE EJECUCIÓN: " + res/1000 + "segs.");
+        System.out.println("TIEMPO DE EJECUCIÓN: " + res/1000.0 + "segs.");
     }
     
     private void btCargarLaberintoActionPerformed(ActionEvent evt) {

@@ -78,6 +78,8 @@ public class QLearning {
         //repetimos el experimento num_repeticiones veces
         for(int i=0; i<num_repeticiones; i++)
         {
+        	long start_rep = System.currentTimeMillis();
+        	
         	//inicializamos en la salida
         	this.casilla_actual = this.salida;
         	int num_movimientos = 0;
@@ -125,12 +127,15 @@ public class QLearning {
         		//Q(s,a) = Q(s,a) + alpha( r + landa * max a'(Q(s', a')) - Q(s,a) )
         		Q[this.casilla_actual.getPosX()][this.casilla_actual.getPosY()][sucesor_elegido.getAccion()] = Q_sa + alpha * (r[sucesor_elegido.getCasilla_final().getPosX()][sucesor_elegido.getCasilla_final().getPosY()] + landa*Q_sa_prima - Q_sa);
         		this.casilla_actual = sucesor_elegido.getCasilla_final();
-        		System.out.println(this.casilla_actual.getPosX() + ", " + this.casilla_actual.getPosY());
+        		//System.out.println(this.casilla_actual.getPosX() + ", " + this.casilla_actual.getPosY());
         	}
-        	System.out.println("-----------------------------------VUELTA TERMINADA----------------------");
+        	
+        	long end_rep = System.currentTimeMillis();
+        	long res = end_rep - start_rep;
+        	System.out.println("--------------REPETICION " + i + " TERMINADA en " + res/1000.0 + " secs ----------------------");
         }
         
-        System.out.println("-------- APRENDIDO --------");
+        System.out.println("-------- ¡¡¡APRENDIDO!!! --------");
         
         for(int i = 0; i < limX ; i++)
         {
