@@ -1,4 +1,4 @@
-package laberinto;
+package q_learning;
 
 import javax.swing.JButton;
 
@@ -7,6 +7,7 @@ import javax.swing.JButton;
  *
  * @author usuario_local
  */
+@SuppressWarnings("serial")
 public class Casilla extends JButton
 {
     boolean abierto;

@@ -1,6 +1,8 @@
-package laberinto;
+package q_learning.laberinto;
 
 import java.util.ArrayList;
+
+import q_learning.Casilla;
 
 public class QLearning {
 
@@ -71,7 +73,7 @@ public class QLearning {
 		int acciones_posibles = 4;
         inicializaQ(limX, limY, acciones_posibles);
         r = new double [limX][limY]; //inicializa r
-        r[meta.posX][meta.posY] = 100; //inicializamos la recompensa de llegar a la meta a 100
+        r[meta.getPosX()][meta.getPosY()] = 100; //inicializamos la recompensa de llegar a la meta a 100
         
         //repetimos el experimento num_repeticiones veces
         for(int i=0; i<num_repeticiones; i++)
@@ -100,7 +102,7 @@ public class QLearning {
         			for(int suc=0; suc<sucesores.size(); suc++)
         			{
         				//elige la accion con mayor recompensa Q en la tabla
-        				if(Q[this.casilla_actual.posX][this.casilla_actual.posY][sucesores.get(suc).getAccion()] > Q_sa)
+        				if(Q[this.casilla_actual.getPosX()][this.casilla_actual.getPosY()][sucesores.get(suc).getAccion()] > Q_sa)
         				{
         					sucesor_elegido = sucesores.get(suc);
         				}
@@ -108,20 +110,20 @@ public class QLearning {
         		}
         		
         		//calculamos el coste actual Q(s,a) para la fórmula
-        		Q_sa = Q[this.casilla_actual.posX][this.casilla_actual.posY][sucesor_elegido.getAccion()];
+        		Q_sa = Q[this.casilla_actual.getPosX()][this.casilla_actual.getPosY()][sucesor_elegido.getAccion()];
         		//Calculamos el coste max a'(Q(s', a')) para la formula
         		for(int a_prima=0; a_prima<acciones_posibles; a_prima++)
     			{
     				//elige la accion con mayor recompensa Q para todas las a_prima
-    				if(Q[sucesor_elegido.getCasilla_final().posX][sucesor_elegido.getCasilla_final().posY][a_prima] > Q_sa_prima)
+    				if(Q[sucesor_elegido.getCasilla_final().getPosX()][sucesor_elegido.getCasilla_final().getPosY()][a_prima] > Q_sa_prima)
     				{
-    					Q_sa_prima = Q[sucesor_elegido.getCasilla_final().posX][sucesor_elegido.getCasilla_final().posY][a_prima];
+    					Q_sa_prima = Q[sucesor_elegido.getCasilla_final().getPosX()][sucesor_elegido.getCasilla_final().getPosY()][a_prima];
     				}
     			}
         		
         		//ejecutamos la accion, y actualizamos Q
         		//Q(s,a) = Q(s,a) + alpha( r + landa * max a'(Q(s', a')) - Q(s,a) )
-        		Q[this.casilla_actual.posX][this.casilla_actual.posY][sucesor_elegido.getAccion()] = Q_sa + alpha * (r[sucesor_elegido.getCasilla_final().posX][sucesor_elegido.getCasilla_final().posY] + landa*Q_sa_prima - Q_sa);
+        		Q[this.casilla_actual.getPosX()][this.casilla_actual.getPosY()][sucesor_elegido.getAccion()] = Q_sa + alpha * (r[sucesor_elegido.getCasilla_final().getPosX()][sucesor_elegido.getCasilla_final().getPosY()] + landa*Q_sa_prima - Q_sa);
         		this.casilla_actual = sucesor_elegido.getCasilla_final();
         		System.out.println(this.casilla_actual.getPosX() + ", " + this.casilla_actual.getPosY());
         	}

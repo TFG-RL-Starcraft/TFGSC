@@ -1,7 +1,8 @@
-package laberinto;
+package q_learning.generador_laberintos;
 
-import java.awt.List;
 import java.util.ArrayList;
+
+import q_learning.Casilla;
 
 
 
@@ -108,7 +109,7 @@ public class AEstrella
                     //Set g(nâ€™) to be g(n) plus the cost to get to nâ€™ from n
                    // casilla_aux.calculaG(inicial);
                     //casilla_aux.calculaG(inicial);
-                    casilla_aux.setG(n.getG()+ Math.sqrt(Math.pow((n.getPosX()-casilla_aux.posX), 2) + Math.pow(n.getPosY()-casilla_aux.getPosY(), 2)));
+                    casilla_aux.setG(n.getG()+ Math.sqrt(Math.pow((n.getPosX()-casilla_aux.getPosX()), 2) + Math.pow(n.getPosY()-casilla_aux.getPosY(), 2)));
                     //Set f(nâ€™) to be g(nâ€™) plus h(nâ€™)
                     casilla_aux.calculaF();
                     //If nâ€™ is on the OPEN list and existing one is as good or better, then
@@ -117,21 +118,21 @@ public class AEstrella
                     {
                         abierto.remove(nPrima);
                         
-                        if(casilla_aux.f < nPrima.f)
+                        if(casilla_aux.getF() < nPrima.getF())
                         {
-                            nPrima.padre = casilla_aux.padre;
-                            nPrima.h = casilla_aux.h;
-                            nPrima.g = casilla_aux.g;
-                            nPrima.f = casilla_aux.f;
+                        	nPrima.setPadre(casilla_aux.getPadre());
+                        	nPrima.setH(casilla_aux.getH());
+                        	nPrima.setG(casilla_aux.getG());
+                            nPrima.setF(casilla_aux.getF());
                         }
 
                     }
                     else
                     {
-                        nPrima.padre = casilla_aux.padre;
-                        nPrima.h = casilla_aux.h;
-                        nPrima.g = casilla_aux.g;
-                        nPrima.f = casilla_aux.f;
+                        nPrima.setPadre(casilla_aux.getPadre());
+                        nPrima.setH(casilla_aux.getH());
+                        nPrima.setG(casilla_aux.getG());
+                        nPrima.setF(casilla_aux.getF());
                     }
                        
                     abierto.add(nPrima);
@@ -195,12 +196,12 @@ public class AEstrella
         
         ArrayList<Casilla> camino = new ArrayList<Casilla>();
         
-        Casilla casilla_actual = meta.padre;
+        Casilla casilla_actual = meta.getPadre();
         
-        while(!casilla_actual.esInicio)
+        while(!casilla_actual.esInicio())
         {
             camino.add(casilla_actual);
-            casilla_actual = casilla_actual.padre;
+            casilla_actual = casilla_actual.getPadre();
         }
         
         return camino;

@@ -1,4 +1,6 @@
-package laberinto;
+package q_learning.laberinto;
+
+import q_learning.Casilla;
 
 public class Sucesor {
 	
