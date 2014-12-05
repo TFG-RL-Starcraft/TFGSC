@@ -86,8 +86,10 @@ public class QLearning {
         	int num_movimientos = 0;
         	
         	//mientras no lleguemos al final o no agotemos los movimientos
-        	while(!this.casilla_actual.equals(this.meta) && num_movimientos < 100)
+        	while(!this.casilla_actual.equals(this.meta) && num_movimientos < 1000)
         	{
+        		//System.out.println("n " + num_movimientos);
+        		
         		ArrayList<Sucesor> sucesores = generaSucesores(this.casilla_actual); //con la accion que los ha "generado"
         		Sucesor sucesor_elegido = sucesores.get(0); //inicializamos en el primer sucesor, pero cambiará
         		
