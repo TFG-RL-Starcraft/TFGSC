@@ -72,7 +72,7 @@ public class QLearning {
 	public void aprendeLaberinto(int num_repeticiones)
 	{ 
 		double alpha = 0.1;
-		double landa = 0.5;
+		double landa = 0.7;
 		
 		int acciones_posibles = 4;
         inicializaQ(limX, limY, acciones_posibles);
@@ -91,16 +91,14 @@ public class QLearning {
         	//mientras no lleguemos al final o no agotemos los movimientos
         	while(!this.casilla_actual.equals(this.meta) ) //&& num_movimientos < (limX*limY))
         	{
-        		//System.out.println("n " + num_movimientos);
-        		
         		ArrayList<Sucesor> sucesores = generaSucesores(this.casilla_actual); //con la accion que los ha "generado"
         		Sucesor sucesor_elegido = null;
         		
         		double Q_sa = Double.MIN_VALUE; 
         		double Q_sa_prima = Double.MIN_VALUE;
         		//elegimos la acción a realizar (sucesor) de todas las posibles, ya sea por el coste o aleatoriamente
-        		//le asignamos un 20% de probabilidad de elegir una accion totalmente aleatoria
-        		if(Math.random() <= 0.2) //TODO probar con varias probabilidades
+        		//le asignamos un 10% de probabilidad de elegir una accion totalmente aleatoria
+        		if(Math.random() <= 0.1) //TODO probar con varias probabilidades
         		{
         			int rand = (int) Math.floor(Math.random()*sucesores.size());
         			sucesor_elegido = sucesores.get(rand);
@@ -108,13 +106,14 @@ public class QLearning {
         		else //SI NO, cogemos un sucesor teniendo en cuenta los costes
         			//dando más probabilidad a los que tengan más coste, pero generando un número al azar de todas formas
         		{
-        			//System.out.println("CASILLA (" + this.casilla_actual.getPosX() + "," + this.casilla_actual.getPosY() + ") con " + sucesores.size() + " sucesores");
+       //System.out.println("CASILLA (" + this.casilla_actual.getPosX() + "," + this.casilla_actual.getPosY() + ") con " + sucesores.size() + " sucesores");
         			double probabilidad_total = 0;
         			for (int suc = 0; suc<sucesores.size(); suc++)
         			{
         				probabilidad_total = probabilidad_total + Q[this.casilla_actual.getPosX()][this.casilla_actual.getPosY()][sucesores.get(suc).getAccion()];
-        				//System.out.print("Q acc:" + sucesores.get(suc).getAccion() + " " + Q[this.casilla_actual.getPosX()][this.casilla_actual.getPosY()][sucesores.get(suc).getAccion()] + " - ");
-        			}//System.out.println();
+        //System.out.print("Q acc:" + sucesores.get(suc).getAccion() + " " + Q[this.casilla_actual.getPosX()][this.casilla_actual.getPosY()][sucesores.get(suc).getAccion()] + " - ");
+        			}
+        //System.out.println();
         			
         			double rand = Math.random() * probabilidad_total;
         			
@@ -128,8 +127,18 @@ public class QLearning {
     					}
         			}
         			
+        //System.out.println("prob_total: " + probabilidad_total + ", rand: " + rand + ", opc_elegida: " + sucesor_elegido.getAccion());
+            		
         		}
         		
+        /*		
+		try {
+			new BufferedReader(new InputStreamReader(System.in)).readLine();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        */		
         		//calculamos el coste actual Q(s,a) para la fórmula
         		Q_sa = Q[this.casilla_actual.getPosX()][this.casilla_actual.getPosY()][sucesor_elegido.getAccion()];
         		//Calculamos el coste max a'(Q(s', a')) para la formula
@@ -151,8 +160,8 @@ public class QLearning {
         		num_movimientos++;
         	}
         	
-        	if(i%100 == 0 || i<100)
-        		System.out.println("REPETICION " + i + " TERMINADA en " + num_movimientos + " movs");
+        	//if(i%100 == 0 || i<100)
+        		//System.out.println("REPETICION " + i + " TERMINADA en " + num_movimientos + " movs");
         }
         
         System.out.println("-------- ¡¡¡APRENDIDO!!! --------");
