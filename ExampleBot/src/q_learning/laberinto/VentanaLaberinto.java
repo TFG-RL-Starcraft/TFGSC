@@ -89,7 +89,7 @@ public class VentanaLaberinto extends javax.swing.JFrame {
     private void btEmpezarActionPerformed(java.awt.event.ActionEvent evt) {
         long start = System.currentTimeMillis();
         
-        q.aprendeLaberinto(100);
+        q.aprendeLaberinto(10000);
         
         long end = System.currentTimeMillis();
         long res = end - start;
