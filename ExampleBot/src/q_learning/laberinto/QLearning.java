@@ -155,8 +155,7 @@ public class QLearning {
         		//Q(s,a) = Q(s,a) + alpha( r + landa * max a'(Q(s', a')) - Q(s,a) )
         		Q[this.casilla_actual.getPosX()][this.casilla_actual.getPosY()][sucesor_elegido.getAccion()] = Q_sa + alpha * (r[sucesor_elegido.getCasilla_final().getPosX()][sucesor_elegido.getCasilla_final().getPosY()] + landa*Q_sa_prima - Q_sa);
         		this.casilla_actual = sucesor_elegido.getCasilla_final();
-        		//System.out.println(this.casilla_actual.getPosX() + ", " + this.casilla_actual.getPosY());
-        	
+        		
         		num_movimientos++;
         	}
         	
