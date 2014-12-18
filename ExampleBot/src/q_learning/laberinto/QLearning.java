@@ -71,8 +71,8 @@ public class QLearning {
 	 */
 	public void aprendeLaberinto(int num_repeticiones)
 	{ 
-		double alpha = 0.1;
-		double landa = 0.7;
+		double alpha = 0.2;
+		double landa = 0.99;
 		
 		int acciones_posibles = 4;
         inicializaQ(limX, limY, acciones_posibles);
