@@ -1,9 +1,14 @@
 package q_learning.generador_laberintos;
-import java.awt.Color;
 
 import q_learning.Casilla;
 
-
+/**
+ * Clase que contiene la estructura de un laberinto (tablero) que nos servirá
+ * posteriormente para poder ejecutar el algoritmo Q-Learning sobre él.
+ * El laberinto está compuesto de Casillas (JButton) que tienen un tipo (INICIO, META, PARED...)
+ * @author Lin
+ *
+ */
 public class Laberinto 
 {
     Casilla [][] tablero;

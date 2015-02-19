@@ -7,14 +7,15 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 
 import q_learning.Casilla;
 
 /**
+ * Ventana que gestiona todo el proceso de creación del laberinro, carga y guardado.
+ * @author Lin
  *
- * @author usuario_local
  */
+//TODO Como líneas futuras se podría intentar independizar la vista del negocio.
 @SuppressWarnings("serial")
 public class VentanaGeneradorLaberintos extends javax.swing.JFrame {
 

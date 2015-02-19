@@ -5,9 +5,9 @@ import q_learning.Casilla;
 public class Sucesor {
 	
 	private Casilla casilla_final;
-	private int accion;
+	private Accion accion;
 	
-	public Sucesor(Casilla cas, int acc)
+	public Sucesor(Casilla cas, Accion acc)
 	{
 		casilla_final = cas;
 		accion = acc;
@@ -23,11 +23,11 @@ public class Sucesor {
 		this.casilla_final = casilla_final;
 	}
 
-	public int getAccion() {
+	public Accion getAccion() {
 		return accion;
 	}
 
-	public void setAccion(int accion) {
+	public void setAccion(Accion accion) {
 		this.accion = accion;
 	}
 	
