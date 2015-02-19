@@ -1,6 +1,10 @@
 package q_learning;
 
+import java.awt.Color;
+
 import javax.swing.JButton;
+
+import q_learning.generador_laberintos.TipoCasilla;
 
 
 /**
@@ -10,69 +14,53 @@ import javax.swing.JButton;
 @SuppressWarnings("serial")
 public class Casilla extends JButton
 {
-    boolean abierto;
-    Casilla padre;
-    double g;
-    double h;
-    double f;
     int posX ;
     int posY ;
-    boolean esPared;
-    boolean esMeta;
-    boolean esInicio;
+    TipoCasilla tipo;
     
     public Casilla(int posx,int posy)
     {
         posX = posx;
         posY = posy;
-        abierto = true;
-        esPared = false;
-        esMeta = false;
-        esInicio = false;
-        padre = null;
-        f = Double.MAX_VALUE;
+        tipo = TipoCasilla.VACIO;
     }
     
     public Casilla(Casilla c)
     { 
-        abierto = c.abierto;
-        padre = c.padre;
-        g = c.g;
-        h = c.h;
-        f = c.f;
         posX = c.getPosX();
         posY = c.getPosY();
-        esPared = c.esPared;
-        esMeta = c.esMeta;
-        esInicio = c.esInicio;
+        tipo = c.getTipo();
     }
-    public boolean esMeta()
+    
+	public boolean esMeta()
     {
-        return esMeta;
+        return this.tipo.compareTo(TipoCasilla.META) == 0;
     }
     public boolean esPared()
     {
-        return esPared;
+        return this.tipo.compareTo(TipoCasilla.PARED) == 0;
     }
     public boolean esInicio()
     {
-        return esInicio;
-    }
-    public void setPared()
-    {
-        esPared = true;
+        return this.tipo.compareTo(TipoCasilla.INICIO) == 0;
     }
     public void setInicio()
     {
-        esInicio = true;
+    	this.tipo = TipoCasilla.INICIO;
+		this.setBackground(Color.blue);
     }
     public void setMeta()
     {
-        esMeta = true;
+        this.tipo = TipoCasilla.META;
+		this.setBackground(Color.green);
     }
-    public void setAbierto(boolean b)
+    public TipoCasilla getTipo()
     {
-        abierto =b;
+		return tipo;
+	}
+    public void setTipo(TipoCasilla tipo)
+    {
+        this.tipo = tipo;
     }
     public int getPosX()
     {
@@ -82,66 +70,22 @@ public class Casilla extends JButton
     {
         return posY;
     }
-    public void setInicio(boolean b)
-    {
-        esInicio = b;
-    }
-    public void setMeta(boolean b)
-    {
-        esMeta = b;
-    }
     public void setPared(boolean b)
     {
-        esPared = b;
+        if(b)
+        {
+        	this.tipo = TipoCasilla.PARED;
+            this.setBackground(Color.black);
+        }
+        else
+        {
+        	this.tipo = TipoCasilla.VACIO;
+            this.setBackground(Color.white);
+        }
     }
-  
-    public void setF(double f)
-    {
-        this.f = f;
-    }
-    public void setG(double g)
-    {
-        this.g = g;
-    }
-    public void setH(double h)
-    {
-        this.h = h;
-    }
-    public double getF()
-    {
-        return f;
-    }
-    public double getG()
-    {
-        return g;
-    }
-    public double getH()
-    {
-        return h;
-    }
-    /*
-    Esto es por el método Jincho, luego hay que cambiarlo
-    */
-    public void calculaG(Casilla inicio)
-    {
-        this.g = Math.sqrt(Math.pow((inicio.getPosX()-this.posX), 2) + Math.pow(inicio.getPosY()-this.posY, 2));
-    }
-    public void calculaH(Casilla meta)
-    {
-        this.h = Math.sqrt(Math.pow((meta.getPosX()-this.posX), 2) + Math.pow(meta.getPosY()-this.posY, 2));
-    }
-    public void calculaF()
-    {
-        this.f =  this.g + this.h;
-    }
-    
-    public Casilla getPadre()
-    {
-        return padre;
-    }
-    
-    public void setPadre(Casilla padre)
-    {
-        this.padre = padre;
-    }
+
+	public void reset() {
+		this.tipo = TipoCasilla.VACIO;
+		this.setBackground(Color.WHITE);
+	}
 }

@@ -16,7 +16,7 @@ import q_learning.Casilla;
  * @author usuario_local
  */
 @SuppressWarnings("serial")
-public class VentanaTablero extends javax.swing.JFrame {
+public class VentanaGeneradorLaberintos extends javax.swing.JFrame {
 
     /**
      * Creates new form NewJFrame
@@ -25,23 +25,12 @@ public class VentanaTablero extends javax.swing.JFrame {
     public static final int yboton = 30;
     public static final int xInicio = 150;
     public static final int yInicio = 50;
+       
+    //Mantenemos una variable con el laberinto (tablero)
+    private Laberinto laberinto; //guarda la referencia a toda la estructura del ejercicio
     
-    public static final int VACIO = 0;
-    public static final int PARED = 1;
-    public static final int INICIO = 2;
-    public static final int META = 3;
-    
-    public static  int paso ;
-    
-     private Casilla tablero[][];
-    private Casilla meta;
-    private Casilla inicio;
-    private AEstrella a; //guarda la referencia a toda la estructura del ejercicio
-    int maxX;
-    int maxY;
-    public VentanaTablero() {
+    public VentanaGeneradorLaberintos() {
         initComponents();
-
     }
 
     
@@ -55,7 +44,6 @@ public class VentanaTablero extends javax.swing.JFrame {
     private void initComponents() {
 
         lbPaso = new javax.swing.JLabel();
-        btEmpezar = new javax.swing.JButton();
         btSalvarLaberinto = new javax.swing.JButton();
         btCargarLaberinto = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
@@ -66,14 +54,6 @@ public class VentanaTablero extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        btEmpezar.setText("Empezar");
-        btEmpezar.setEnabled(false);
-        btEmpezar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btEmpezarActionPerformed(evt);
-            }
-        });
         
         btSalvarLaberinto.setText("SALVAR LABERINTO");
         btSalvarLaberinto.setEnabled(true);
@@ -138,8 +118,6 @@ public class VentanaTablero extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addComponent(btReset)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btEmpezar)
-                        .addGap(31, 31, 31)
                         .addComponent(btSalvarLaberinto)
                         .addGap(31, 31, 31)
                         .addComponent(btCargarLaberinto)
@@ -155,7 +133,6 @@ public class VentanaTablero extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btEmpezar)
                     .addComponent(btSalvarLaberinto)
                     .addComponent(btCargarLaberinto)
                     .addComponent(jLabel1)
@@ -176,20 +153,12 @@ public class VentanaTablero extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void btEmpezarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btEmpezarActionPerformed
-        // TODO add your handling code here:
-        btEmpezar.setEnabled(false);
-        resolver();
-    }//GEN-LAST:event_btEmpezarActionPerformed
-    
+ 
     private void btSalvarLaberintoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btEmpezarActionPerformed
-        // TODO add your handling code here:
         salvarLaberintoEnFichero();
     }//GEN-LAST:event_btEmpezarActionPerformed
     
    private void btCargarLaberintoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btEmpezarActionPerformed
-        // TODO add your handling code here:
         cargarLaberintoDesdeFichero();
     }//GEN-LAST:event_btEmpezarActionPerformed
 
@@ -199,193 +168,99 @@ public class VentanaTablero extends javax.swing.JFrame {
     }//GEN-LAST:event_btResetActionPerformed
 
     private void jTextFieldXActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldXActionPerformed
-        // TODO add your handling code here:
     }//GEN-LAST:event_jTextFieldXActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
         generarTablero();
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    /**
+     * End of the Constructor
+     */
+    
+  
     private void generarTablero() {
-		// TODO Auto-generated method stub
+    	jButton1.setEnabled(false);
+        jTextFieldX.setEnabled(false);
+        jTextFieldY.setEnabled(false);
+        btReset.setEnabled(true);    	
+    	
     	int x = Integer.valueOf(jTextFieldX.getText());
         int y = Integer.valueOf(jTextFieldY.getText());
         
-        paso = INICIO;
-        tablero = new Casilla [x][y];
-        btEmpezar.setEnabled(false);
-        maxX = x;
-        maxY = y;
-        /* Inicializa las casillas visualmente y las aÃ±ade a la ventana*/
+        //Inicializa el laberinto
+        laberinto = new Laberinto(new Casilla[x][y], null, null, x, y);
+        
+        //Inicializa las casillas visualmente y las añade a la ventana y al laberinto
         for(int i = 0; i < x ; i++)
         {
             for(int j = 0; j < y;j++)
             {
-                tablero[i][j] = new Casilla(i,j);
-                tablero[i][j].setBounds(xboton*i+xInicio, yboton*j+yInicio, xboton, yboton);
-                tablero[i][j].setVisible(true);
-                tablero[i][j].setBackground(Color.WHITE);
-                tablero[i][j].addActionListener(new ActionListener() 
+            	Casilla c = new Casilla(i,j);              
+                c.setBounds(xboton*i+xInicio, yboton*j+yInicio, xboton, yboton);
+                c.setVisible(true);
+                c.setBackground(Color.WHITE);
+                c.addActionListener(new ActionListener() 
                 {
                     public void actionPerformed(ActionEvent e) {
-                        Casilla c = (Casilla)e.getSource();
-                        
-                        switch(paso)
-                        {
-                            case INICIO:
-                                c.setInicio();
-                                
-                                inicio = tablero[c.getPosX()][c.getPosY()];
-                                /* Esto luego habrÃ¡ que pasarlo como parÃ¡metro, o seleccionarlo visualmente */
-                                setInicio(inicio);
-        
-
-        
-                                paso = META;
-                                
-                                jLabel1.setText("Seleccione la meta");
-                                break;
-                            case META:
-                                if(!c.esInicio())
-                                {
-                                     paso = PARED;
-                                    meta = tablero[c.getPosX()][c.getPosY()];
-                                    setMeta(meta);
-                                    jLabel1.setText("Seleccione las paredes");
-                                    btEmpezar.setEnabled(true);
-                                    a = new AEstrella(tablero, inicio, meta, maxX, maxY);
-                                }
-                               
-                                break;
-                            case PARED:
-                                if(!c.esInicio() && !c.esMeta() && btEmpezar.isEnabled())
-                                {
-                                    if (!c.esPared())
-                                    {
-                                        a.setPared(c, true);
-                                        setPared(c, true);
-                                    }
-                                    else
-                                    {
-                                        a.setPared(c, false);
-                                        setPared(c, false);
-                                    }
-                                }
-                                
-                                break;
-                                    
-                        }
+                        Casilla c_pulsada = (Casilla)e.getSource();                        
+                        cambiarCasilla(c_pulsada);                        
                     }
+
                 });
-                this.add(tablero[i][j]);
+                
+                this.add(c);                
+                laberinto.setCasilla(i, j, c);
             }
         }
         
         repaint();
-        jButton1.setEnabled(false);
-        jTextFieldX.setEnabled(false);
-        jTextFieldY.setEnabled(false);
-        btReset.setEnabled(true);
 	}
 
+    /* CAmbia el estado de una casilla al hacer click */
+    private void cambiarCasilla(Casilla c) {
+		if(laberinto.getInicio() == null) // si aún no esta asignado el inicio
+		{               
+            laberinto.setInicio(c);
+            this.repaint();
+                           
+            jLabel1.setText("Seleccione la meta");
+		} 
+		else if(laberinto.getMeta() == null) // si aún no esta asignada la meta
+        {
+            if(!c.esInicio())
+            {        
+                laberinto.setMeta(c);
+                this.repaint();
+                
+                jLabel1.setText("Seleccione las paredes");
+            }
+        }
+		else //si ya estan asignados inicio y meta, asigna las paredes
+        {
+            if(!c.esInicio() && !c.esMeta())
+            {
+            	//si es pared la pone vacio, y si es vacio lo pone pared
+            	laberinto.setPared(c, !c.esPared());
+                
+                this.repaint();
+            }
+        }
 
+	}
+    
 	public void reset()
     {
         jLabel1.setText("Seleccione la casilla de inicio");
-        paso = INICIO;
-        btEmpezar.setEnabled(false);
-        for(int i = 0; i < maxX ; i++)
-        {
-            for(int j = 0; j < maxY;j++)
-            {
-                tablero[i][j].setAbierto(true);
-                tablero[i][j].setPared(false);
-                tablero[i][j].setMeta(false);
-                 tablero[i][j].setInicio(false);
-                 tablero[i][j].setPadre(null);
-                tablero[i][j].setF(Double.MAX_VALUE);
-                tablero[i][j].setBackground(Color.WHITE);
-                this.repaint();
-                    
-            }
-        }
-        a = null;
-    }
-    public void resolver()
-    {
-        this.setCamino(a.buscaMejorCamino());
-    }
-   
-    public void setCamino(ArrayList<Casilla> camino)
-    {
-        if(camino == null)
-        {
-            jLabel1.setText("No se pudo encontrar ningun camino");
-        }
-        else
-        {
-             for(Casilla c : camino)
-            {
-                this.tablero[c.getPosX()][c.getPosY()].setBackground(Color.yellow);
-            }
-         
-            this.repaint();
-        }
-       
-    }
-    
-    /*
-    Si el booleano que se le pasa es true, lo hace pared, si no, lo hace casilla normal
-    */
-    public void setPared(Casilla pared, boolean b)
-    {    
-        if(b)
-        {
-            //this.tablero[pared.getPosX()][pared.getPosY()] = pared;
-            this.tablero[pared.getPosX()][pared.getPosY()].setPared(true);
-            this.tablero[pared.getPosX()][pared.getPosY()].setBackground(Color.black);
-            a.setPared(tablero[pared.getPosX()][pared.getPosY()], true);
-        }
-        else
-        {
-            //this.tablero[pared.getPosX()][pared.getPosY()] = pared;
-            this.tablero[pared.getPosX()][pared.getPosY()].setPared(false);
-            this.tablero[pared.getPosX()][pared.getPosY()].setBackground(Color.white);
-            a.setPared(tablero[pared.getPosX()][pared.getPosY()], false);
-        }
-       
-        this.repaint();
-    }
-    
-    
-    
-    public void setMeta(Casilla meta)
-    {
-        //this.tablero[meta.getPosX()][meta.getPosY()] = meta;
-        this.tablero[meta.getPosX()][meta.getPosY()].setMeta();
-        this.tablero[meta.getPosX()][meta.getPosY()].setBackground(Color.green);
-        
-        this.repaint();
-    }
-    
-    
-    public void setInicio(Casilla inicio)
-    {
-        //this.tablero[inicio.getPosX()][inicio.getPosY()] = inicio;
-        this.tablero[inicio.getPosX()][inicio.getPosY()].setInicio();
-        this.tablero[inicio.getPosX()][inicio.getPosY()].setBackground(Color.blue);
-        
+        laberinto.reset();
         this.repaint();
     }
 
-    public Casilla getCasilla(int x, int y)
-    {
-        return this.tablero[x][y];
-    }
-    
     private void salvarLaberintoEnFichero() {
 		
+    	int maxX = Integer.valueOf(jTextFieldX.getText());
+        int maxY = Integer.valueOf(jTextFieldY.getText());
+    	
     	FileWriter fichero = null;
         PrintWriter pw = null;
         try
@@ -399,15 +274,8 @@ public class VentanaTablero extends javax.swing.JFrame {
             {
                 for(int i = 0; i < maxX ; i++)
                 {
-                	//guarda un 0 si es casilla normal, y 1 si es pared
-                	if(this.tablero[i][j].esPared())
-                		pw.print(PARED);
-                	else if(this.tablero[i][j].esInicio())
-                		pw.print(INICIO);
-                	else if(this.tablero[i][j].esMeta())
-                		pw.print(META);
-                	else
-                		pw.print(VACIO);
+                	//guarda el valor del Enumerado Tipo
+                	pw.print(laberinto.getCasilla(i, j).getTipo().getValor());
                 	
                 	if(i != maxX-1)
                 		pw.print(",");
@@ -436,13 +304,16 @@ public class VentanaTablero extends javax.swing.JFrame {
     
     private void cargarLaberintoDesdeFichero() {
     	//borramos el laberinto anterior
+    	int maxX = Integer.valueOf(jTextFieldX.getText());
+        int maxY = Integer.valueOf(jTextFieldY.getText());
+    	
     	for(int j = 0; j < maxY;j++)
         {
             for(int i = 0; i < maxX ; i++)
             {
-            	this.tablero[i][j].setEnabled(false);
-            	this.tablero[i][j].setVisible(false);
-            	this.tablero[i][j] = null;
+            	laberinto.getCasilla(i, j).setEnabled(false);
+            	laberinto.getCasilla(i, j).setVisible(false);
+            	laberinto.setCasilla(i, j, null);
             }            
         }
     	
@@ -463,6 +334,7 @@ public class VentanaTablero extends javax.swing.JFrame {
             jTextFieldY.setText(dim[1]);
             
             generarTablero(); //aquí genera el tablero y vuelve a dar valor a las variables locales
+            jLabel1.setText("Seleccione la casilla de inicio");
             
             //generamos el resto de casillas
             int cont_Y = 0;
@@ -471,17 +343,18 @@ public class VentanaTablero extends javax.swing.JFrame {
             	String cas[] = linea.split(",");
             	for(int i = 0; i < maxX ; i++)
             	{
-            		if(Integer.parseInt(cas[i]) == PARED)
+            		if(Integer.parseInt(cas[i]) == TipoCasilla.PARED.getValor())
             		{
-            			a.setPared(this.tablero[i][cont_Y], true);
-                        setPared(this.tablero[i][cont_Y], true);
+            			laberinto.setPared(laberinto.getCasilla(i, cont_Y), true);
+            			//a.setPared(this.tablero[i][cont_Y], true);
+                        //setPared(this.tablero[i][cont_Y], true);
             		}
-                	else if(Integer.parseInt(cas[i]) == INICIO)
+                	else if(Integer.parseInt(cas[i]) == TipoCasilla.INICIO.getValor())
                 	{
                         //inicio = this.tablero[i][cont_Y];
                         //setInicio(inicio);
                 	}
-                	else if(Integer.parseInt(cas[i]) == META)
+                	else if(Integer.parseInt(cas[i]) == TipoCasilla.META.getValor())
                 	{
                 		//meta = this.tablero[i][cont_Y];
                         //setMeta(meta);
@@ -511,7 +384,6 @@ public class VentanaTablero extends javax.swing.JFrame {
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btEmpezar;
     private javax.swing.JButton btReset;
     private javax.swing.JButton btSalvarLaberinto;
     private javax.swing.JButton btCargarLaberinto;

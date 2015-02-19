@@ -1,6 +1,6 @@
 package q_learning;
 
-import q_learning.generador_laberintos.VentanaTablero;
+import q_learning.generador_laberintos.VentanaGeneradorLaberintos;
 
 
 /**
@@ -14,7 +14,7 @@ public class Principal_GeneradorLaberintos {
      */
     public static void main(String[] args) {
 
-    	VentanaTablero lab = new VentanaTablero();      
+    	VentanaGeneradorLaberintos lab = new VentanaGeneradorLaberintos();      
         lab.setVisible(true);
     }
     
