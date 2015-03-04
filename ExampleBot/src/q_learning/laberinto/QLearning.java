@@ -100,7 +100,7 @@ public class QLearning {
         			double probabilidad_total = 0;
         			for (int suc = 0; suc<sucesores.size(); suc++)
         			{
-        				probabilidad_total = probabilidad_total + Q[this.casilla_actual.getPosX()][this.casilla_actual.getPosY()][sucesores.get(suc).getAccion().getValor()];
+        				probabilidad_total = probabilidad_total + Q[this.casilla_actual.getPosX()][this.casilla_actual.getPosY()][sucesores.get(suc).getAccion().getValue()];
 //System.out.print("Q acc:" + sucesores.get(suc).getAccion() + " " + Q[this.casilla_actual.getPosX()][this.casilla_actual.getPosY()][sucesores.get(suc).getAccion()] + " - ");
         			}
 //System.out.println();
@@ -110,7 +110,7 @@ public class QLearning {
         			double probabilidad_suma = 0;
         			for (int suc = 0; suc<sucesores.size(); suc++)
         			{
-        				probabilidad_suma = probabilidad_suma + Q[this.casilla_actual.getPosX()][this.casilla_actual.getPosY()][sucesores.get(suc).getAccion().getValor()];
+        				probabilidad_suma = probabilidad_suma + Q[this.casilla_actual.getPosX()][this.casilla_actual.getPosY()][sucesores.get(suc).getAccion().getValue()];
         				if (sucesor_elegido == null && probabilidad_suma >= rand)
     					{
         					sucesor_elegido = sucesores.get(suc);
@@ -130,7 +130,7 @@ try {
 }
 */		
         		//calculamos el coste actual Q(s,a) para la fórmula
-        		Q_sa = Q[this.casilla_actual.getPosX()][this.casilla_actual.getPosY()][sucesor_elegido.getAccion().getValor()];
+        		Q_sa = Q[this.casilla_actual.getPosX()][this.casilla_actual.getPosY()][sucesor_elegido.getAccion().getValue()];
         		//Calculamos el coste max a'(Q(s', a')) para la formula
         		for(int a_prima=0; a_prima<acciones_posibles; a_prima++)
     			{
@@ -143,7 +143,7 @@ try {
         		
         		//ejecutamos la accion, y actualizamos Q
         		//Q(s,a) = Q(s,a) + alpha( r + landa * max a'(Q(s', a')) - Q(s,a) )
-        		Q[this.casilla_actual.getPosX()][this.casilla_actual.getPosY()][sucesor_elegido.getAccion().getValor()] = Q_sa + alpha * (r[sucesor_elegido.getCasilla_final().getPosX()][sucesor_elegido.getCasilla_final().getPosY()] + landa*Q_sa_prima - Q_sa);
+        		Q[this.casilla_actual.getPosX()][this.casilla_actual.getPosY()][sucesor_elegido.getAccion().getValue()] = Q_sa + alpha * (r[sucesor_elegido.getCasilla_final().getPosX()][sucesor_elegido.getCasilla_final().getPosY()] + landa*Q_sa_prima - Q_sa);
         		this.casilla_actual = sucesor_elegido.getCasilla_final();
         		
         		num_movimientos++;
@@ -177,11 +177,11 @@ try {
 			
 			for(int suc=0; suc<sucesores.size(); suc++)
 			{
-				double Q_act = Q[this.casilla_actual.getPosX()][this.casilla_actual.getPosY()][sucesores.get(suc).getAccion().getValor()];
+				double Q_act = Q[this.casilla_actual.getPosX()][this.casilla_actual.getPosY()][sucesores.get(suc).getAccion().getValue()];
 				if(Q_act > Q_max)
 				{
 					Q_max = Q_act;
-					acc_elegida = sucesores.get(suc).getAccion().getValor();
+					acc_elegida = sucesores.get(suc).getAccion().getValue();
 					cas_final = sucesores.get(suc).getCasilla_final();
 				}
 			}
@@ -205,25 +205,25 @@ try {
         if((c.getPosY()-1 >=0) &&
                 !tablero[c.getPosX()][c.getPosY()-1].esPared()) //00 - MOVERSE_ARRIBA
         {
-        	sucesores.add(new Sucesor(tablero[c.getPosX()][c.getPosY()-1], Accion.MOVERSE_ARRIBA));
+        	sucesores.add(new Sucesor(tablero[c.getPosX()][c.getPosY()-1], Action.MOVERSE_ARRIBA));
         }
         
         if((c.getPosX()+1 < limX) &&
                 !tablero[c.getPosX()+1][c.getPosY()].esPared()) //01 - MOVERSE_DERECHA
         {
-        	sucesores.add(new Sucesor(tablero[c.getPosX()+1][c.getPosY()], Accion.MOVERSE_DERECHA));
+        	sucesores.add(new Sucesor(tablero[c.getPosX()+1][c.getPosY()], Action.MOVERSE_DERECHA));
         }
         
         if((c.getPosY()+1 < limY) &&
                 !tablero[c.getPosX()][c.getPosY()+1].esPared()) //02 - MOVERSE_ABAJO
         {
-        	sucesores.add(new Sucesor(tablero[c.getPosX()][c.getPosY()+1], Accion.MOVERSE_ABAJO));
+        	sucesores.add(new Sucesor(tablero[c.getPosX()][c.getPosY()+1], Action.MOVERSE_ABAJO));
         }
         
         if((c.getPosX()-1 >=0) &&
                 !tablero[c.getPosX()-1][c.getPosY()].esPared()) //03 - MOVERSE_IZQUIERDA
         {
-        	sucesores.add(new Sucesor(tablero[c.getPosX()-1][c.getPosY()], Accion.MOVERSE_IZQUIERDA));
+        	sucesores.add(new Sucesor(tablero[c.getPosX()-1][c.getPosY()], Action.MOVERSE_IZQUIERDA));
         }
 
 

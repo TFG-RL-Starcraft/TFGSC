@@ -1,3 +1,4 @@
+package starcraft;
 import bwapi.*;
 import bwta.*;
 
