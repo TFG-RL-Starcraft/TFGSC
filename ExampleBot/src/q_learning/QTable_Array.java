@@ -1,7 +1,5 @@
-package laberinto;
+package q_learning;
 
-import q_learning.QTable;
-import q_learning.State;
 import starcraft.Action;
 
 public class QTable_Array implements QTable {
@@ -42,6 +40,21 @@ public class QTable_Array implements QTable {
 			best = Math.max(best, table[state.getValue()][i]);
 		}
 		return best;
+	}
+
+	@Override
+	public Action bestAction(State state) {
+		int best_index = 0;
+		double best = table[state.getValue()][best_index];
+		
+		for (int i=1; i<table[state.getValue()].length; i++) {
+			if(best<table[state.getValue()][i]) {
+				best = table[state.getValue()][i];
+				best_index = i;
+			}
+		}
+		
+		return Action.get(best_index);
 	}
 
 }

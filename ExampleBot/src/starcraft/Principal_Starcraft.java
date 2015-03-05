@@ -2,8 +2,8 @@ package starcraft;
 import q_learning.Environment;
 import q_learning.QLearner;
 import q_learning.QTable;
+import q_learning.QTable_Array;
 import q_learning.State;
-import laberinto.QTable_Array;
 import bwapi.*;
 import bwta.*;
 

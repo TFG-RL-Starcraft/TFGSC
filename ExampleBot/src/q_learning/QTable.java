@@ -19,4 +19,7 @@ public interface QTable {
 
 	// the best Quantity of all the possible actions in a given state
 	public double bestQuantity(State state);
+	
+	// the best Action of all the possible in a given state (or the first one in case of a tie)
+	public Action bestAction(State state);
 }
