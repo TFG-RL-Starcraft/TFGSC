@@ -37,45 +37,6 @@ public class QLearner {
 		
 		return action;
 	}
-
-	/*
-	 * Esta sería otra política para elegir la acción a realizar
-	 */
-//	private Action getAction(int state) {
-//		double Q_sa = Double.MIN_VALUE; 
-//		double Q_sa_prima = Double.MIN_VALUE;
-//
-//		//le asignamos una probabilidad de elegir una accion totalmente aleatoria
-//		if(Math.random() <= RANDOM_ACTION_PROB)
-//		{
-//			int rand = (int) Math.floor(Math.random()*sucesores.size());
-//			sucesor_elegido = sucesores.get(rand);
-//		} 
-//		else //SI NO, cogemos un sucesor teniendo en cuenta los costes
-//			//dando más probabilidad a los que tengan más coste, pero generando un número al azar de todas formas
-//		{
-//
-//			double probabilidad_total = 0;
-//			for (int suc = 0; suc<sucesores.size(); suc++)
-//			{
-//				probabilidad_total = probabilidad_total + qTable[this.casilla_actual.getPosX()][this.casilla_actual.getPosY()][sucesores.get(suc).getAccion().getValue()];
-//			}
-//			
-//			double rand = Math.random() * probabilidad_total;
-//			
-//			double probabilidad_suma = 0;
-//			for (int suc = 0; suc<sucesores.size(); suc++)
-//			{
-//				probabilidad_suma = probabilidad_suma + qTable[this.casilla_actual.getPosX()][this.casilla_actual.getPosY()][sucesores.get(suc).getAccion().getValue()];
-//				if (sucesor_elegido == null && probabilidad_suma >= rand)
-//				{
-//					sucesor_elegido = sucesores.get(suc);
-//				}
-//			}
-//		}
-//		
-//		return null;
-//	}
 	
 	// Choose a random action considering the probabilities of each
 	private Action getAction(State state) {
