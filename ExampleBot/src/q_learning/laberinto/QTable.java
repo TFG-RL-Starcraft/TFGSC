@@ -10,9 +10,9 @@ public interface QTable {
 	public void clear();
 	
 	// Returns the Quantity of a pair (state, action)
-	public double get(State state, Action action);
+	public double get(State state, int a);
 	
-	// Set the Quatity of a pair (state, action)
+	// Set the Quantity of a pair (state, action)
 	public void set(State state, Action action, double quantity);
 
 	// the best Quantity of all the possible actions in a given state

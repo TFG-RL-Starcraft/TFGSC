@@ -15,10 +15,13 @@ public interface Environment {
 	
 	// Executes an action in the current state
 	// Returns the reward
-	public double execute(int action);
+	public double execute(Action action);
 	
 	// Returns current state
 	public State state();
+	
+	// Last state
+	public State lastState();
 	
 	// Current state is final?
 	public boolean finalState();

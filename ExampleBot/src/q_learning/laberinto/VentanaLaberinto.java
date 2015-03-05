@@ -81,7 +81,7 @@ public class VentanaLaberinto extends javax.swing.JFrame {
         
         generarLaberinto();
         
-        q = new QLearning(tablero, salida, meta, maxX, maxY); //INICIALIZA LA ESTRUCTURA PARA EL ALGORITMO
+//        q = new QLearning(tablero, salida, meta, maxX, maxY); //INICIALIZA LA ESTRUCTURA PARA EL ALGORITMO
         
     }
 
@@ -89,13 +89,13 @@ public class VentanaLaberinto extends javax.swing.JFrame {
     private void btEmpezarActionPerformed(java.awt.event.ActionEvent evt) {
         long start = System.currentTimeMillis();
         
-        q.aprendeLaberinto(10000);
+//        q.aprendeLaberinto(10000);
         
         long end = System.currentTimeMillis();
         long res = end - start;
         System.out.println("TIEMPO DE EJECUCIÓN: " + res/1000.0 + "segs.");
         
-        q.buscaMejorCamino();
+//        q.buscaMejorCamino();
     }
     
     private void btCargarLaberintoActionPerformed(ActionEvent evt) {
@@ -154,7 +154,7 @@ public class VentanaLaberinto extends javax.swing.JFrame {
             	cont_Y++;
             }
             
-            q = new QLearning(tablero, salida, meta, maxX, maxY); //INICIALIZA LA ESTRUCTURA PARA EL ALGORITMO
+//            q = new QLearning(tablero, salida, meta, maxX, maxY); //INICIALIZA LA ESTRUCTURA PARA EL ALGORITMO
                
             
         } catch (Exception e) {

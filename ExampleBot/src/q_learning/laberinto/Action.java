@@ -18,9 +18,12 @@ public enum Action {
         this.value = value;
 	}
 	
-	public int getValue()
-	{
+	public int getValue() {
 		return this.value;
+	}
+	
+	public static Action get(int value) {
+		return Action.values()[value];		
 	}
 	
 }

@@ -22,8 +22,8 @@ public class QTable_Array implements QTable {
 	}
 
 	@Override
-	public double get(State state, Action action) {
-		return table[state.getValue()][action.getValue()];
+	public double get(State state, int a) {
+		return table[state.getValue()][a];
 	}
 
 	@Override
