@@ -24,7 +24,7 @@ public class VentanaLaberinto extends javax.swing.JFrame {
     private Casilla salida;
     private Casilla meta;   
     
-    private QLearning q; //guarda la referencia a toda la estructura del ejercicio
+//    private QLearning q; //guarda la referencia a toda la estructura del ejercicio
     
     int maxX = 15; //casillas máximas en horizontal y vertical
     int maxY = 15;
