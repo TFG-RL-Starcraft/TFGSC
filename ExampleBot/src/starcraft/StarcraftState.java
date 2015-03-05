@@ -1,6 +1,6 @@
 package starcraft;
 
-import aprendizaje.State;
+import q_learning.State;
 
 public class StarcraftState implements State {
 

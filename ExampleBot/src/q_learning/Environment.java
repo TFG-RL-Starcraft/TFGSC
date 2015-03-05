@@ -1,4 +1,4 @@
-package aprendizaje;
+package q_learning;
 
 import starcraft.Action;
 

@@ -1,7 +1,7 @@
 package starcraft;
 
-import aprendizaje.Environment;
-import aprendizaje.State;
+import q_learning.Environment;
+import q_learning.State;
 import bwapi.Game;
 import bwapi.Position;
 import bwapi.Unit;
