@@ -1,4 +1,6 @@
-package q_learning.laberinto;
+package starcraft;
+
+import aprendizaje.State;
 
 public class StarcraftState implements State {
 

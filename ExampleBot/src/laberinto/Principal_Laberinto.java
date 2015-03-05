@@ -1,6 +1,5 @@
-package q_learning;
+package laberinto;
 
-import q_learning.laberinto.VentanaLaberinto;
 
 /**
  *

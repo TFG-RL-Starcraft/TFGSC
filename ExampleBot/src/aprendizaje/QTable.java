@@ -1,4 +1,6 @@
-package q_learning.laberinto;
+package aprendizaje;
+
+import starcraft.Action;
 
 /**
  * Interface to the structure that contains the "table" Q(s,a) -> Quantity(state, action)

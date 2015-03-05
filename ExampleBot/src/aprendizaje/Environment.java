@@ -1,4 +1,6 @@
-package q_learning.laberinto;
+package aprendizaje;
+
+import starcraft.Action;
 
 /**
  * Interface to be implemented by classes that want to learn QLearning.

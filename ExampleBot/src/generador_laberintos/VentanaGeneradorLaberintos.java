@@ -1,4 +1,4 @@
-package q_learning.generador_laberintos;
+package generador_laberintos;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
@@ -8,7 +8,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 
-import q_learning.Casilla;
+import laberinto.Casilla;
 
 /**
  * Ventana que gestiona todo el proceso de creación del laberinro, carga y guardado.

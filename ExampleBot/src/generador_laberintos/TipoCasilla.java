@@ -1,4 +1,4 @@
-package q_learning.generador_laberintos;
+package generador_laberintos;
 
 /**
  * Enumerado con los tipos de casilla posibles.

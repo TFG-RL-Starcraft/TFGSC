@@ -1,16 +1,13 @@
 package starcraft;
-import q_learning.laberinto.Action;
-import q_learning.laberinto.Environment;
-import q_learning.laberinto.QLearner;
-import q_learning.laberinto.QTable;
-import q_learning.laberinto.QTable_Array;
-import q_learning.laberinto.StarcraftEnvironment;
-import q_learning.laberinto.StarcraftState;
-import q_learning.laberinto.State;
+import aprendizaje.Environment;
+import aprendizaje.QLearner;
+import aprendizaje.QTable;
+import aprendizaje.State;
+import laberinto.QTable_Array;
 import bwapi.*;
 import bwta.*;
 
-public class TestBot1{
+public class Principal_Starcraft{
 
     private Mirror mirror = new Mirror();
 
@@ -53,7 +50,7 @@ public class TestBot1{
 
 				q = new QLearner(e, qT);
 
-				//game.setLocalSpeed(0);
+				game.setLocalSpeed(0);
 				//game.setGUI(false);				
 				
 				
@@ -161,6 +158,6 @@ public class TestBot1{
 	}
     
     public static void main(String... args) {
-        new TestBot1().run();
+        new Principal_Starcraft().run();
     }
 }

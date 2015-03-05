@@ -1,4 +1,8 @@
-package q_learning.laberinto;
+package laberinto;
+
+import aprendizaje.QTable;
+import aprendizaje.State;
+import starcraft.Action;
 
 public class QTable_Array implements QTable {
 

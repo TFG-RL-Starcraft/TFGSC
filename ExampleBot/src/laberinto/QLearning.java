@@ -1,9 +1,7 @@
-package q_learning.laberinto;
+package laberinto;
 
 import java.awt.Color;
 import java.util.ArrayList;
-
-import q_learning.Casilla;
 
 public class QLearning {
 

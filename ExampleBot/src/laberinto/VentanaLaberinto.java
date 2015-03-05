@@ -1,12 +1,10 @@
-package q_learning.laberinto;
+package laberinto;
 
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.FileReader;
-
-import q_learning.Casilla;
 
 @SuppressWarnings("serial")
 public class VentanaLaberinto extends javax.swing.JFrame {

@@ -1,5 +1,7 @@
-package q_learning.laberinto;
+package starcraft;
 
+import aprendizaje.Environment;
+import aprendizaje.State;
 import bwapi.Game;
 import bwapi.Position;
 import bwapi.Unit;

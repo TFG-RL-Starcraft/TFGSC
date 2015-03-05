@@ -1,6 +1,5 @@
-package q_learning;
+package generador_laberintos;
 
-import q_learning.generador_laberintos.VentanaGeneradorLaberintos;
 
 
 /**

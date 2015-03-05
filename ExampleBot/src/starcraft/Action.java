@@ -1,4 +1,4 @@
-package q_learning.laberinto;
+package starcraft;
 
 /**
  * Enum containing the possible actions in each state

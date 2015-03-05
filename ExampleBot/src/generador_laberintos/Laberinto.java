@@ -1,6 +1,6 @@
-package q_learning.generador_laberintos;
+package generador_laberintos;
 
-import q_learning.Casilla;
+import laberinto.Casilla;
 
 /**
  * Clase que contiene la estructura de un laberinto (tablero) que nos servirá

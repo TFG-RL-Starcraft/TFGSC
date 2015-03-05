@@ -1,10 +1,10 @@
-package q_learning;
+package laberinto;
 
 import java.awt.Color;
 
 import javax.swing.JButton;
 
-import q_learning.generador_laberintos.TipoCasilla;
+import generador_laberintos.TipoCasilla;
 
 
 /**

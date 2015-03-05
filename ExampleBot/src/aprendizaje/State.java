@@ -1,4 +1,4 @@
-package q_learning.laberinto;
+package aprendizaje;
 
 public interface State {
 

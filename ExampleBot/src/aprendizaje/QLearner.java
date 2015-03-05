@@ -1,4 +1,6 @@
-package q_learning.laberinto;
+package aprendizaje;
+
+import starcraft.Action;
 
 public class QLearner {
 
