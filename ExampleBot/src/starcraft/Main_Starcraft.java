@@ -116,8 +116,8 @@ public class Main_Starcraft{
             
 	        @Override
 	        public void onEnd(boolean isWinner) {
-	    		System.out.print("END");
-	    		Log.printLog("log.txt", "n. iter: " + numIter);
+	    		System.out.println("END");
+	    		Log.printLog("log.txt", Integer.toString(numIter));
 	    		//q.endOfGame();
 	    		IO_QTable.escribirTabla(q.qTable(), "qtabla.txt");
 	    	}  
