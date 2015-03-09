@@ -19,7 +19,7 @@ public class StarcraftEnvironment implements Environment{
 		this.game = game;
 		this.unit = unit;
 		this.state = new StarcraftState((int)unit.getPosition().getX()/BOX_LENGTH, 
-				(int)unit.getPosition().getY()/BOX_LENGTH, game.mapHeight(), game.mapWidth());
+				(int)unit.getPosition().getY()/BOX_LENGTH, game.mapWidth(), game.mapHeight());
 		this.lastState = lastState;
 	}
 	
@@ -37,39 +37,62 @@ public class StarcraftEnvironment implements Environment{
 	public double execute(Action action) {
 		
 		double reward = 0;
-		
+		 
+		// Current position
 		int posX = (int)unit.getPosition().getX()/BOX_LENGTH;
 		int posY = (int)unit.getPosition().getY()/BOX_LENGTH;
+		
+		String action_str = "";
 		
 		switch(action) {
 		 case MOVE_UP: 
 			 posY--;
+			 action_str = "ARRIBA";
 		     break;
 		 case MOVE_RIGHT: 
-		     posX++;
+			 posX++;
+			 action_str = "DERECHA";
 		     break;
 		 case MOVE_DOWN:
 			 posY++;
+			 action_str = "ABAJO";
 		     break;
 		 case MOVE_LEFT:
 			 posX--;
+			 action_str = "IZQUIERDA";
 		     break;
 		 default: 
 			 
 			 break;
 		}
+/*
+        if(new_p.isValid()){
+        	unit.move(new_p);
+			System.out.println(action_str + " - " + unit.getPosition().getX() / 32 + " "+ unit.getPosition().getY() / 32);
+		}
+        
+        if (unit.isStuck())
+			System.out.println("STUCK");*/
+				
+		//System.out.println("X: " + unit.getPosition().getX() / 32 + "(" + unit.getPosition().getX() + ") Y: "+ unit.getPosition().getY() / 32 + "(" + unit.getPosition().getY() + ")");
+		//System.out.println("Accion a tomar: " + action_str);
+		unit.move(new Position(posX*BOX_LENGTH, posY*BOX_LENGTH));
+		
+		
 			 
 		// This is a switch evaluating if the new State/Action would have a good/bad Reward
 		
 		if (isValid(posX, posY)) {
-			state = new StarcraftState((int)unit.getPosition().getX()/BOX_LENGTH, 
-					(int)unit.getPosition().getY()/BOX_LENGTH, game.mapHeight(), game.mapWidth());
+			state = new StarcraftState(posX, posY, game.mapWidth(), game.mapHeight());
 			if(finalState()) {
-				reward = 100;
-			}
-		} else {
-			reward = -1;
-		}
+				reward = 1000;
+			} /*else {
+				reward = -0.1;
+			}*/
+			
+		} /*else {
+			reward = -10;
+		}*/
 
 		return reward;
 	}

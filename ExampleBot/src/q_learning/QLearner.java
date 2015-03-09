@@ -4,13 +4,13 @@ import starcraft.Action;
 
 public class QLearner {
 
-	private static double ALPHA = 0.2;
-	private static double GAMMA = 0.99;
+	private static double ALPHA = 0.2; //learning rate -> what extent the newly acquired information will override the old information
+	private static double GAMMA = 0.5; //discount factor -> importance to future rewards
 	private static double RANDOM_ACTION_PROB = 0.1;
 	
 	private Environment environment;
 	private QTable qTable;
-	
+		
 	public QLearner(Environment environment, QTable qTable)
 	{
 		this.environment = environment;
@@ -55,6 +55,11 @@ public class QLearner {
 		}
 
 		return null;
+	}
+	
+	// The full QTable
+	public QTable qTable() {
+		return qTable;
 	}
 
 }

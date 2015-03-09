@@ -22,6 +22,16 @@ public class QTable_Array implements QTable {
 		// Q[i][j] = Math.random();
 		// This causes unpredictable actions in the exploring paths selection
 	}
+	
+	@Override
+	public int getStates() {
+		return table.length;
+	}
+
+	@Override
+	public int getActions() {
+		return table[0].length;
+	}
 
 	@Override
 	public double get(State state, int a) {

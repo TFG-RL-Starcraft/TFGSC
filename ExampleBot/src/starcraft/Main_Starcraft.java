@@ -1,4 +1,6 @@
 package starcraft;
+import entrada_salida.IO_QTable;
+import entrada_salida.Log;
 import q_learning.Environment;
 import q_learning.QLearner;
 import q_learning.QTable;
@@ -15,6 +17,8 @@ public class Main_Starcraft{
     private Unit marine;
     private Player self;
     private QLearner q;
+    
+    private int numIter;
 
     public void run() {
         mirror.getModule().setEventListener(new DefaultBWListener() {
@@ -35,21 +39,22 @@ public class Main_Starcraft{
                 BWTA.analyze();
                 
                 getMarine();
-                
                 System.out.println("Map data ready");
-                System.out.println(game.mapHeight() + " " + game.mapWidth());
-				System.out.println(marine.getPosition().getX() / 32 + " "
+                System.out.println("HEIGHT: " + game.mapHeight() + " WIDTH: " + game.mapWidth());
+				System.out.println("MarineX: " + marine.getPosition().getX() / 32 + " MarineY: "
 						+ marine.getPosition().getY() / 32);
 				
 				
-				State s = new StarcraftState(1, 1, game.mapHeight(), game.mapWidth());
-				Environment e = new StarcraftEnvironment(game, marine, s);
-
-				QTable qT = new QTable_Array(e.numStates(), e.numActions());
-				// q = new QLearner(w,qT);
-
+				State ls = new StarcraftState(1, 1, game.mapWidth(), game.mapHeight());
+				Environment e = new StarcraftEnvironment(game, marine, ls);
+				
+				QTable qT = IO_QTable.leerTabla("qtabla.txt");
+				if(qT == null) {
+					qT = new QTable_Array(e.numStates(), e.numActions());
+				}
 				q = new QLearner(e, qT);
-
+				numIter = 0;
+				
 				game.setLocalSpeed(0);
 				//game.setGUI(false);				
 				
@@ -100,47 +105,21 @@ public class Main_Starcraft{
             /*
              * Parte de nuestra aplicaci�n
              */
-                Action a = q.step();
-                Position p = new Position(marine.getPosition().getX(),marine.getPosition().getY());
-                String direction = "";
-                
-                switch(a) {
-                	case MOVE_UP: 
-					p = new Position(marine.getPosition().getX(),marine.getPosition().getY() - 32);
-					direction = "ARRIBA";
-					break;
-	       		 case MOVE_RIGHT: 
-	       			p = new Position(marine.getPosition().getX() + 32, marine.getPosition().getY());
-	       			direction = "DERECHA";
-	       		    break;
-	       		 case MOVE_DOWN:
-	       			p = new Position(marine.getPosition().getX(),marine.getPosition().getY() + 32);
-	       			direction = "ABAJO";
-	       		    break;
-	       		 case MOVE_LEFT:
-					p = new Position(marine.getPosition().getX() - 32, marine.getPosition().getY());
-					direction = "IZQUIERDA";
-					break;
-	       		 default: 
-	   			 
-	   			 break;
+             
+                // Si estamos en un nuevo estado (está quieto), ejecutamos un paso en el aprendizaje
+                if(!marine.isMoving()) {
+	                Action a = q.step();
+	                numIter++;
                 }
-                
-                if(p.isValid()){
-					marine.move(p);
-					System.out.println(direction + " - " + marine.getPosition().getX() / 32 + " "+ marine.getPosition().getY() / 32);
-				}
-                
-                if (marine.isStuck())
-					System.out.println("STUCK");
                 
             }
             
 	        @Override
 	        public void onEnd(boolean isWinner) {
-	    		System.out.println("END");
+	    		System.out.print("END");
+	    		Log.printLog("log.txt", "n. iter: " + numIter);
 	    		//q.endOfGame();
-	    		//Fichero.escribirTabla(q.qTable());
+	    		IO_QTable.escribirTabla(q.qTable(), "qtabla.txt");
 	    	}  
             
             

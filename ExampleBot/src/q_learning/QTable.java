@@ -11,6 +11,12 @@ public interface QTable {
 	// Clear the Quantities table
 	public void clear();
 	
+	// Returns the number of states
+	public int getStates();
+	
+	// Returns the number of actions
+	public int getActions();
+	
 	// Returns the Quantity of a pair (state, action)
 	public double get(State state, int a);
 	
