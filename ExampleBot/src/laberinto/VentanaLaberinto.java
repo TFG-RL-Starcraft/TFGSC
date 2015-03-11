@@ -112,7 +112,7 @@ public class VentanaLaberinto extends javax.swing.JFrame {
         	env.reset();
         	
         	//Ejecuta el experimento hasta llegar a la meta
-	        while(!env.finalState())
+	        while(!env.isFinalState())
 	        {
 	        	q.step();
 	        }
@@ -300,7 +300,7 @@ public class VentanaLaberinto extends javax.swing.JFrame {
     	QPlayer qp = new QPlayer(env, qT);
 
     	//Ejecuta el player hasta llegar a la meta
-        while(!env.finalState())
+        while(!env.isFinalState())
         {
         	qp.step();       	
         }	

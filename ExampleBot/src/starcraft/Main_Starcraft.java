@@ -4,6 +4,7 @@ import entrada_salida.Log;
 import q_learning.Action;
 import q_learning.Environment;
 import q_learning.QLearner;
+import q_learning.QPlayer;
 import q_learning.QTable;
 import q_learning.QTable_Array;
 import q_learning.State;
@@ -20,6 +21,7 @@ public class Main_Starcraft{
     private Unit marine;
     private Player self;
     private QLearner q;
+    private QPlayer qp;
     
     private int numIter; //number of iterations for a experiment
     private static int numExper; //number of experiments
@@ -44,9 +46,9 @@ public class Main_Starcraft{
                 
                 getMarine();
                 System.out.println("Map data ready");
-                System.out.println("HEIGHT: " + game.mapHeight() + " WIDTH: " + game.mapWidth());
-				System.out.println("MarineX: " + marine.getPosition().getX() / 32 + " MarineY: "
-						+ marine.getPosition().getY() / 32);
+//                System.out.println("HEIGHT: " + game.mapHeight() + " WIDTH: " + game.mapWidth());
+//				System.out.println("MarineX: " + marine.getPosition().getX() / 32 + " MarineY: "
+//						+ marine.getPosition().getY() / 32);
 				
 				
 				State ls = new StarcraftState(1, 1, game.mapWidth(), game.mapHeight());
@@ -57,14 +59,16 @@ public class Main_Starcraft{
 					qT = new QTable_Array(e.numStates(), e.numActions(), StarcraftAction.MOVE_UP);
 				}
 				q = new QLearner(e, qT, StarcraftAction.MOVE_UP);
+				qp = new QPlayer(e, qT);
 				numIter = 0;
 				
 				game.setLocalSpeed(0);
-				//game.setGUI(false);				
+				//game.setGUI(false);
+				
+                //game.enableFlag(1); 	// This command allows you to manually control the units during the game.
+                						//Is incompatible with the "game.setGUI(false)" command
 				
 				
-                //game.enableFlag(1); // This command allows you to manually control the units during the game.
-                
             }
  
             @Override
@@ -72,50 +76,13 @@ public class Main_Starcraft{
                 game.setTextSize(10);
                 game.drawTextScreen(10, 10, "Playing as " + self.getName() + " - " + self.getRace());
 
-//                StringBuilder units = new StringBuilder("My units:\n");
-//
-//                //iterate through my units
-//                for (Unit myUnit : self.getUnits()) {
-//                    units.append(myUnit.getType()).append(" ").append(myUnit.getTilePosition()).append("\n");
-//
-//                    //if there's enough minerals, train an SCV
-//                    if (myUnit.getType() == UnitType.Terran_Command_Center && self.minerals() >= 50) {
-//                        myUnit.train(UnitType.Terran_SCV);
-//                    }
-//
-//                    //if it's a drone and it's idle, send it to the closest mineral patch
-//                    if (myUnit.getType().isWorker() && myUnit.isIdle()) {
-//                        Unit closestMineral = null;
-//
-//                        //find the closest mineral
-//                        for (Unit neutralUnit : game.neutral().getUnits()) {
-//                            if (neutralUnit.getType().isMineralField()) {
-//                                if (closestMineral == null || myUnit.getDistance(neutralUnit) < myUnit.getDistance(closestMineral)) {
-//                                    closestMineral = neutralUnit;
-//                                }
-//                            }
-//                        }
-//
-//                        //if a mineral patch was found, send the drone to gather it
-//                        if (closestMineral != null) {
-//                            myUnit.gather(closestMineral, false);
-//                        }
-//                    }
-//                }
-//
-//                //draw my units on screen
-//                game.drawTextScreen(10, 25, units.toString());
-            
-            /*
-             * Parte de nuestra aplicaci�n
-             */
-             
-                // Si estamos en un nuevo estado (está quieto), ejecutamos un paso en el aprendizaje
-                if(!marine.isMoving()) {
-	                Action a = q.step();
-	                numIter++;
+                //if some action is done
+                if (q.step() != null) 	//qLearner
+                {
+                	numIter++;
                 }
                 
+                //qp.step(); 	//qPlayer
             }
             
 	        @Override

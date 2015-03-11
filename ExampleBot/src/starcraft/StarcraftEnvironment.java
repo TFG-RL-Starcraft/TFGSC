@@ -14,14 +14,14 @@ public class StarcraftEnvironment implements Environment{
 	private Game game;
 	private Unit unit;
 	private State state;
-	private State lastState;
+	private State finalState;
 	
-	public StarcraftEnvironment(Game game, Unit unit, State lastState) {
+	public StarcraftEnvironment(Game game, Unit unit, State finalState) {
 		this.game = game;
 		this.unit = unit;
 		this.state = new StarcraftState((int)unit.getPosition().getX()/BOX_LENGTH, 
 				(int)unit.getPosition().getY()/BOX_LENGTH, game.mapWidth(), game.mapHeight());
-		this.lastState = lastState;
+		this.finalState = finalState;
 	}
 	
 	@Override
@@ -43,7 +43,7 @@ public class StarcraftEnvironment implements Environment{
 		int posX = (int)unit.getPosition().getX()/BOX_LENGTH;
 		int posY = (int)unit.getPosition().getY()/BOX_LENGTH;
 		
-		String action_str = "";
+		String action_str = ""; //aux variable to print the action taken
 		
 		StarcraftAction sc_action = (StarcraftAction)action;
 		switch(sc_action) {
@@ -82,19 +82,17 @@ public class StarcraftEnvironment implements Environment{
 		
 		
 			 
-		// This is a switch evaluating if the new State/Action would have a good/bad Reward
+		// This is a "switch" evaluating if the new State/Action would have a good/bad Reward
+		// Here you must enter all the rewards of learning
 		
 		if (isValid(posX, posY)) {
 			state = new StarcraftState(posX, posY, game.mapWidth(), game.mapHeight());
-			if(finalState()) {
+			if(isFinalState()) {
 				reward = 1000;
-			} /*else {
-				reward = -0.1;
-			}*/
-			
-		} /*else {
-			reward = -10;
-		}*/
+			}
+		} else {
+			reward = -1;
+		}
 
 		return reward;
 	}
@@ -105,15 +103,20 @@ public class StarcraftEnvironment implements Environment{
 	}
 	
 	@Override
-	public State lastState() {
-		return lastState;
+	public State finalState() {
+		return finalState;
 	}
 
 	@Override
-	public boolean finalState() {
-		return state.getValue() == lastState.getValue();
+	public boolean isFinalState() {
+		return state.getValue() == finalState.getValue();
 	}
 
+	@Override
+	public boolean stateHasChanged() {
+		return !unit.isMoving();
+	}
+	
 	@Override
 	public void reset() {
 		// TODO Auto-generated method stub

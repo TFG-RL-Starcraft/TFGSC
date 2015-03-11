@@ -73,7 +73,7 @@ public class LaberintoEnvironment implements Environment{
 		
 		if (esValida(posX, posY)) {
 			state = new LaberintoState(posX, posY, ancho, alto);
-			if(finalState()) {
+			if(isFinalState()) {
 				reward = 1000;
 			} 
 		}
@@ -87,12 +87,12 @@ public class LaberintoEnvironment implements Environment{
 	}
 
 	@Override
-	public State lastState() {
+	public State finalState() {
 		return lastState;
 	}
 
 	@Override
-	public boolean finalState() {
+	public boolean isFinalState() {
 		return state.getValue() == lastState.getValue();
 	}
 
@@ -106,5 +106,11 @@ public class LaberintoEnvironment implements Environment{
 		return (0 <= x) && (x < ancho) &&
 				(0 <= y) && (y < alto) && 
 				!game.getCasilla(x, y).esPared();
+	}
+
+	@Override
+	public boolean stateHasChanged() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

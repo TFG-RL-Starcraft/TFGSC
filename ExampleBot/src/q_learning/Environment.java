@@ -22,11 +22,15 @@ public interface Environment {
 	public State state();
 	
 	// Last state
-	public State lastState();
+	public State finalState();
 	
 	// Current state is final?
-	public boolean finalState();
+	public boolean isFinalState();
 	
+	// The current state has changed from the previous one
+	public boolean stateHasChanged();
+		
 	// Reset to initial world state
 	public void reset();
+
 }

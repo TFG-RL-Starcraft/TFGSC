@@ -18,23 +18,27 @@ public class QLearner {
 		this.action = action;
 	}
 	
-	// Executes one step in the learning process
+	// Executes one step in the learning process if the state has changed
 	public Action step()
 	{     
-		State state = environment.state();
-
-		// Choose action
-		Action action = getAction(state);
-
-		// Execute action
-		double reward = environment.execute(action);
-		State newState = environment.state();
+		Action action = null;
 		
-		// Update Q-Table
-		//Q(s,a) = Q(s,a) + alpha( r + gamma * max a'(Q(s', a')) - Q(s,a) )
-		double newValue = qTable.get(state, action.getValue()) + ALPHA * (reward + GAMMA * qTable.bestQuantity(newState) - qTable.get(state, action.getValue()));
-		newValue = Math.max(0, newValue); //TODO, ver si tiene sentido este max
-		qTable.set(state, action, newValue);	
+		if(environment.stateHasChanged()) {
+			State state = environment.state();
+	
+			// Choose action
+			 action = getAction(state);
+	
+			// Execute action
+			double reward = environment.execute(action);
+			State newState = environment.state();
+			
+			// Update Q-Table
+			//Q(s,a) = Q(s,a) + alpha( r + gamma * max a'(Q(s', a')) - Q(s,a) )
+			double newValue = qTable.get(state, action.getValue()) + ALPHA * (reward + GAMMA * qTable.bestQuantity(newState) - qTable.get(state, action.getValue()));
+			newValue = Math.max(0, newValue); //TODO, ver si tiene sentido este max
+			qTable.set(state, action, newValue);	
+		}
 		
 		return action;
 	}

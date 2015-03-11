@@ -15,14 +15,18 @@ public class QPlayer {
 	// Executes one step in the learning process
 	public Action step()
 	{     
-		State state = environment.state();
-
-		// Choose action
-		Action action = getAction(state);
-
-		// Execute action
-		environment.execute(action);
-
+		Action action = null;
+		
+		if(environment.stateHasChanged()) {
+			State state = environment.state();
+	
+			// Choose action
+			action = getAction(state);
+	
+			// Execute action
+			environment.execute(action);
+		}
+		
 		return action;
 	}
 	
