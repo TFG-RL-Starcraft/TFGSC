@@ -60,7 +60,7 @@ public class Main_Starcraft{
 				numIter = 0;
 				
 				game.setLocalSpeed(0);
-				game.setGUI(false);				
+				//game.setGUI(false);				
 				
 				
                 //game.enableFlag(1); // This command allows you to manually control the units during the game.
@@ -124,10 +124,10 @@ public class Main_Starcraft{
 	    		Log.printLog("log.txt", Integer.toString(numIter));
 	    		//q.endOfGame();
 	    		IO_QTable.escribirTabla(q.qTable(), "qtabla.txt");
-	    		time_end = System.currentTimeMillis();
+	    		time_end = System.currentTimeMillis();	    		
 	    		numExper++;
-	            System.out.println("The Experiment " + numExper + " has taken "+ ( time_end - time_start ) +" milliseconds");
-	    	}  
+	            System.out.println("The Experiment " + numExper + " has taken "+ ( time_end - time_start ) +" milliseconds");  
+	        }  
             
             
         });

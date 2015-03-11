@@ -1,6 +1,5 @@
 package generador_laberintos;
 
-import laberinto.Casilla;
 
 /**
  * Clase que contiene la estructura de un laberinto (tablero) que nos servirá

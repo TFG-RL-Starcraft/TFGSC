@@ -1,15 +1,26 @@
 package laberinto;
 
+import generador_laberintos.Casilla;
+
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.util.ArrayList;
+
+import q_learning.Environment;
+import q_learning.QLearner;
+import q_learning.QPlayer;
+import q_learning.QTable;
+import q_learning.QTable_Array;
+import q_learning.State;
+import starcraft.StarcraftAction;
 
 @SuppressWarnings("serial")
 public class VentanaLaberinto extends javax.swing.JFrame {
 	
-	//Variables creadas por m�, para generar la ventana
+	//Variables creadas por mí, para generar la ventana
     public static final int xboton = 30; //ancho y alto de las celdas
     public static final int yboton = 30;
     public static final int xInicio = 150; //posicio de comienzo del tablero
@@ -24,9 +35,11 @@ public class VentanaLaberinto extends javax.swing.JFrame {
     private Casilla salida;
     private Casilla meta;   
     
-//    private QLearning q; //guarda la referencia a toda la estructura del ejercicio
+    private QLearner q; //guarda la referencia a toda la estructura del ejercicio
+    private Environment env;
+    QTable qT;
     
-    int maxX = 15; //casillas m�ximas en horizontal y vertical
+    int maxX = 15; //casillas máximas en horizontal y vertical
     int maxY = 15;
     
     // Variables declaration - do not modify
@@ -78,25 +91,61 @@ public class VentanaLaberinto extends javax.swing.JFrame {
         this.setSize(800, 600);
         
         generarLaberinto();
-        
-//        q = new QLearning(tablero, salida, meta, maxX, maxY); //INICIALIZA LA ESTRUCTURA PARA EL ALGORITMO
-        
+        /*
+        LaberintoState casilla_incial = new LaberintoState(salida.getPosX(), salida.getPosY(), maxX, maxY);
+        LaberintoState casilla_final = new LaberintoState(meta.getPosX(), meta.getPosY(), maxX, maxY);
+        Environment e = new LaberintoEnvironment(this, maxX, maxY, casilla_incial, casilla_final);
+        QTable qT = new QTable_Array(maxX, maxY, LaberintoAction.MOVE_UP);        
+        q = new QLearner(e, qT, LaberintoAction.MOVE_UP); //INICIALIZA LA ESTRUCTURA PARA EL ALGORITMO
+        */
     }
 
     
     private void btEmpezarActionPerformed(java.awt.event.ActionEvent evt) {
         long start = System.currentTimeMillis();
         
-//        q.aprendeLaberinto(10000);
+        //Repetir este experimento num_iter veces
+        int num_iter = 100;
+        for(int i=0; i<num_iter; i++)
+        {
+        	//Reinicia los valores de Inicio y final
+        	env.reset();
+        	
+        	//Ejecuta el experimento hasta llegar a la meta
+	        while(!env.finalState())
+	        {
+	        	q.step();
+	        }
+        }
         
         long end = System.currentTimeMillis();
         long res = end - start;
-        System.out.println("TIEMPO DE EJECUCI�N: " + res/1000.0 + "segs.");
+        System.out.println("TIEMPO DE EJECUCIÓN: " + res/1000.0 + "segs.");
+              
+		//Imprime el mejor camino
+        imprimeMejorCamino();  
         
-//        q.buscaMejorCamino();
+        //añade a pantalla los valores de la QTable
+        imprimeValoresQTabla();   
     }
-    
-    private void btCargarLaberintoActionPerformed(ActionEvent evt) {
+
+	private void btCargarLaberintoActionPerformed(ActionEvent evt) {
+    	InicializarTablero();
+    	InicializarQLearner();
+	}
+
+
+    private void InicializarQLearner() {
+    	LaberintoState casilla_incial = new LaberintoState(salida.getPosX(), salida.getPosY(), maxX, maxY);
+        LaberintoState casilla_final = new LaberintoState(meta.getPosX(), meta.getPosY(), maxX, maxY);
+        env = new LaberintoEnvironment(this, maxX, maxY, casilla_incial, casilla_final);
+        qT = new QTable_Array(env.numStates(), env.numActions(), LaberintoAction.MOVE_UP);        
+        q = new QLearner(env, qT, LaberintoAction.MOVE_UP); //INICIALIZA LA ESTRUCTURA PARA EL ALGORITMO
+       
+	}
+
+
+	private void InicializarTablero() {
     	//borramos el laberinto anterior
     	for(int j = 0; j < maxY;j++)
         {
@@ -124,7 +173,7 @@ public class VentanaLaberinto extends javax.swing.JFrame {
             maxX = Integer.parseInt(dim[0]);
             maxY = Integer.parseInt(dim[1]);
             
-            generarLaberinto(); //aqu� genera el tablero y vuelve a dar valor a las variables locales
+            generarLaberinto(); //aquí genera el tablero y vuelve a dar valor a las variables locales
             
             //generamos el resto de casillas
             int cont_Y = 0;
@@ -151,10 +200,7 @@ public class VentanaLaberinto extends javax.swing.JFrame {
             	}
             	cont_Y++;
             }
-            
-//            q = new QLearning(tablero, salida, meta, maxX, maxY); //INICIALIZA LA ESTRUCTURA PARA EL ALGORITMO
-               
-            
+  
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -167,15 +213,14 @@ public class VentanaLaberinto extends javax.swing.JFrame {
               e2.printStackTrace();
            }
         }
-		
 	}
 
 
-    private void generarLaberinto() {
+	private void generarLaberinto() {
 
         tablero = new Casilla [maxX][maxY];
         
-        /* Inicializa las casillas visualmente y las añade a la ventana*/
+        /* Inicializa las casillas visualmente y las aÃ±ade a la ventana*/
         for(int i = 0; i < maxX ; i++)
         {
             for(int j = 0; j < maxY;j++)
@@ -231,4 +276,64 @@ public class VentanaLaberinto extends javax.swing.JFrame {
         return this.tablero[x][y];
     }
 
+    
+    
+    
+    
+    private void imprimeValoresQTabla() {
+    	for(int i = 0; i < maxX ; i++)
+        {
+            for(int j = 0; j < maxY;j++)
+            {
+            	tablero[i][j].setText("UP: " + Double.toString(qT.get(new LaberintoState(i,j,maxX,maxY), 0)) + 
+            			", RIGHT: " + Double.toString(qT.get(new LaberintoState(i,j,maxX,maxY), 1)) + 
+            			", DOWN: " + Double.toString(qT.get(new LaberintoState(i,j,maxX,maxY), 2)) + 
+            			", LEFT: " + Double.toString(qT.get(new LaberintoState(i,j,maxX,maxY), 3)));
+            }
+        }	
+	}
+    
+    
+    private void imprimeMejorCamino() {
+    	LimpiarTablero();
+    	env.reset();
+    	QPlayer qp = new QPlayer(env, qT);
+
+    	//Ejecuta el player hasta llegar a la meta
+        while(!env.finalState())
+        {
+        	qp.step();       	
+        }	
+	}
+
+	private void LimpiarTablero() {
+		for(int i = 0; i < maxX ; i++)
+    	{
+			for(int j = 0; j < maxY ; j++)
+			{
+	    		if(tablero[i][j].esPared())
+	    		{
+	    			tablero[i][j].setBackground(Color.black);
+	    		}
+	        	else if(tablero[i][j].esInicio())
+	        	{
+	        		tablero[i][j].setBackground(Color.blue);
+	        	}
+	        	else if(tablero[i][j].esMeta())
+	        	{
+	        		tablero[i][j].setBackground(Color.green);
+	        	}
+	        	else
+	        	{
+	        		tablero[i][j].setBackground(Color.white);
+	        	}
+			}
+    	}
+	}
+
+
+	public void mover(int posX, int posY) {
+		tablero[posX][posY].setBackground(Color.yellow);
+	}
+    
 }

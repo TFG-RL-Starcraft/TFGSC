@@ -1,10 +1,8 @@
-package laberinto;
+package generador_laberintos;
 
 import java.awt.Color;
 
 import javax.swing.JButton;
-
-import generador_laberintos.TipoCasilla;
 
 
 /**
@@ -14,22 +12,22 @@ import generador_laberintos.TipoCasilla;
 @SuppressWarnings("serial")
 public class Casilla extends JButton
 {
-    int posX ;
-    int posY ;
+    int posX, posY;
+    
     TipoCasilla tipo;
     
     public Casilla(int posx,int posy)
     {
-        posX = posx;
-        posY = posy;
-        tipo = TipoCasilla.VACIO;
+    	this.posX = posx;
+        this.posY = posy;
+        this. tipo = TipoCasilla.VACIO;
     }
     
     public Casilla(Casilla c)
     { 
-        posX = c.getPosX();
-        posY = c.getPosY();
-        tipo = c.getTipo();
+    	this.posX = c.getPosX();
+    	this.posY = c.getPosY();
+    	this.tipo = c.getTipo();
     }
     
 	public boolean esMeta()
@@ -43,6 +41,11 @@ public class Casilla extends JButton
     public boolean esInicio()
     {
         return this.tipo.compareTo(TipoCasilla.INICIO) == 0;
+    }
+    public void setVacio()
+    {
+    	this.tipo = TipoCasilla.VACIO;
+		this.setBackground(Color.white);
     }
     public void setInicio()
     {
@@ -88,4 +91,5 @@ public class Casilla extends JButton
 		this.tipo = TipoCasilla.VACIO;
 		this.setBackground(Color.WHITE);
 	}
+
 }

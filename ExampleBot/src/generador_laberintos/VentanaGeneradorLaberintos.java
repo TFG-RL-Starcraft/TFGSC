@@ -8,8 +8,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 
-import laberinto.Casilla;
-
 /**
  * Ventana que gestiona todo el proceso de creación del laberinro, carga y guardado.
  * @author Lin
