@@ -1,6 +1,5 @@
 package q_learning;
 
-import starcraft.Action;
 
 public class QPlayer {
 

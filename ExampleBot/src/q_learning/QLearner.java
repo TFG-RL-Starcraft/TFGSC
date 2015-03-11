@@ -1,6 +1,5 @@
 package q_learning;
 
-import starcraft.Action;
 
 public class QLearner {
 
@@ -10,11 +9,13 @@ public class QLearner {
 	
 	private Environment environment;
 	private QTable qTable;
+	private Action action;
 		
-	public QLearner(Environment environment, QTable qTable)
+	public QLearner(Environment environment, QTable qTable, Action action)
 	{
 		this.environment = environment;
 		this.qTable = qTable;
+		this.action = action;
 	}
 	
 	// Executes one step in the learning process
@@ -51,7 +52,7 @@ public class QLearner {
 		for (int a = 0; a<environment.numActions(); a++) {
 			total += qTable.get(state, a);
 			if (total >= random)
-				return Action.get(a);
+				return action.get(a);
 		}
 
 		return null;

@@ -6,11 +6,11 @@ import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.util.StringTokenizer;
 
+import q_learning.Action;
 import q_learning.QTable;
 import q_learning.QTable_Array;
-import starcraft.Action;
 import starcraft.StarcraftState;
-
+import starcraft.StarcraftAction;
 
 public class IO_QTable {
 	
@@ -70,14 +70,14 @@ public class IO_QTable {
 	         int num_states = Integer.parseInt(line);
 	         line = br.readLine();
 	         int num_actions = Integer.parseInt(line);
-	         qTable = new QTable_Array(num_states,num_actions);
+	         qTable = new QTable_Array(num_states,num_actions, StarcraftAction.MOVE_UP);
 	         
 	         int i=0;
 	         while((line=br.readLine()) != null){
 	        	double quantity[] = parse(line);
 	        	 
             	for(int j = 0; j < quantity.length; j++){
-            		qTable.set(new StarcraftState(i), Action.get(j), quantity[j]);
+            		qTable.set(new StarcraftState(i), StarcraftAction.MOVE_UP.get(j), quantity[j]);
             	}
 	            i++;
 	         }

@@ -1,13 +1,14 @@
 package q_learning;
 
-import starcraft.Action;
 
 public class QTable_Array implements QTable {
 
 	private double[][] table;
+	private Action action;
 	
-	public QTable_Array(int numStates, int numActions) {
+	public QTable_Array(int numStates, int numActions, Action action) {
 		table = new double[numStates][numActions];
+		this.action = action;
 		clear();
 	}
 	
@@ -64,7 +65,7 @@ public class QTable_Array implements QTable {
 			}
 		}
 		
-		return Action.get(best_index);
+		return action.get(best_index);
 	}
 
 }

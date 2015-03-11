@@ -1,5 +1,6 @@
 package starcraft;
 
+import q_learning.Action;
 import q_learning.Environment;
 import q_learning.State;
 import bwapi.Game;
@@ -30,7 +31,7 @@ public class StarcraftEnvironment implements Environment{
 
 	@Override
 	public int numActions() {
-		return Action.values().length;
+		return StarcraftAction.values().length;
 	}
 
 	@Override
@@ -44,7 +45,8 @@ public class StarcraftEnvironment implements Environment{
 		
 		String action_str = "";
 		
-		switch(action) {
+		StarcraftAction sc_action = (StarcraftAction)action;
+		switch(sc_action) {
 		 case MOVE_UP: 
 			 posY--;
 			 action_str = "ARRIBA";

@@ -1,6 +1,7 @@
 package starcraft;
 import entrada_salida.IO_QTable;
 import entrada_salida.Log;
+import q_learning.Action;
 import q_learning.Environment;
 import q_learning.QLearner;
 import q_learning.QTable;
@@ -11,6 +12,8 @@ import bwta.*;
 
 public class Main_Starcraft{
 
+	private static long time_start, time_end;
+	
     private Mirror mirror = new Mirror();
 
     private Game game;
@@ -18,7 +21,8 @@ public class Main_Starcraft{
     private Player self;
     private QLearner q;
     
-    private int numIter;
+    private int numIter; //number of iterations for a experiment
+    private static int numExper; //number of experiments
 
     public void run() {
         mirror.getModule().setEventListener(new DefaultBWListener() {
@@ -50,16 +54,16 @@ public class Main_Starcraft{
 				
 				QTable qT = IO_QTable.leerTabla("qtabla.txt");
 				if(qT == null) {
-					qT = new QTable_Array(e.numStates(), e.numActions());
+					qT = new QTable_Array(e.numStates(), e.numActions(), StarcraftAction.MOVE_UP);
 				}
-				q = new QLearner(e, qT);
+				q = new QLearner(e, qT, StarcraftAction.MOVE_UP);
 				numIter = 0;
 				
 				game.setLocalSpeed(0);
-				//game.setGUI(false);				
+				game.setGUI(false);				
 				
 				
-                game.enableFlag(1); // This command allows you to manually control the units during the game.
+                //game.enableFlag(1); // This command allows you to manually control the units during the game.
                 
             }
  
@@ -120,6 +124,9 @@ public class Main_Starcraft{
 	    		Log.printLog("log.txt", Integer.toString(numIter));
 	    		//q.endOfGame();
 	    		IO_QTable.escribirTabla(q.qTable(), "qtabla.txt");
+	    		time_end = System.currentTimeMillis();
+	    		numExper++;
+	            System.out.println("The Experiment " + numExper + " has taken "+ ( time_end - time_start ) +" milliseconds");
 	    	}  
             
             
@@ -136,7 +143,11 @@ public class Main_Starcraft{
 		}
 	}
     
-    public static void main(String... args) {
+    public static void main(String... args) {   
+    	numExper = 0;
+    	time_start = System.currentTimeMillis();
         new Main_Starcraft().run();
+        time_end = System.currentTimeMillis();
+        System.out.println("The task has taken "+ ( time_end - time_start ) +" milliseconds");
     }
 }

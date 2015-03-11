@@ -1,6 +1,5 @@
 package q_learning;
 
-import starcraft.Action;
 
 /**
  * Interface to be implemented by classes that want to learn QLearning.

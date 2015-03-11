@@ -1,6 +1,5 @@
 package q_learning;
 
-import starcraft.Action;
 
 /**
  * Interface to the structure that contains the "table" Q(s,a) -> Quantity(state, action)
