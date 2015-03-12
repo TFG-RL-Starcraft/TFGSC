@@ -35,12 +35,7 @@ public class IO_QTable {
 	            	}
 	            	pw.println();
 	            }
-	            
-	            
-	            /*for (int i = 0; i < t.getTam(); i++){
-	                pw.println(t.line(0));
-	            }*/
-	 
+
 	        } catch (Exception e) {
 	            e.printStackTrace();
 	        } finally {
@@ -99,30 +94,7 @@ public class IO_QTable {
 		
 		return qTable;
 	}
-	
-	/*private static int[] pLinea(String s){
-		StringTokenizer st = new StringTokenizer(s," ");
-		
-		int num= st.countTokens();
-		String tokens[] = new String[num];
-		int i=0;
-		while(st.hasMoreTokens())
-		{
-			tokens[i]= st.nextToken();
-			i++;
-		}
-		
-		int d[]  = new int[num];
-		
-		for(int j = 0; j < num;j++)
-		{
-			d[j]= Integer.valueOf(tokens[j]);
-		}	
-	
-		
-		return d;
-	}*/
-	
+
 	private static double[] parse(String s)
 	{
 		StringTokenizer st = new StringTokenizer(s," ");

@@ -67,31 +67,20 @@ public class StarcraftEnvironment implements Environment{
 			 
 			 break;
 		}
-/*
-        if(new_p.isValid()){
-        	unit.move(new_p);
-			System.out.println(action_str + " - " + unit.getPosition().getX() / 32 + " "+ unit.getPosition().getY() / 32);
-		}
-        
-        if (unit.isStuck())
-			System.out.println("STUCK");*/
-				
-		//System.out.println("X: " + unit.getPosition().getX() / 32 + "(" + unit.getPosition().getX() + ") Y: "+ unit.getPosition().getY() / 32 + "(" + unit.getPosition().getY() + ")");
-		//System.out.println("Accion a tomar: " + action_str);
-		unit.move(new Position(posX*BOX_LENGTH, posY*BOX_LENGTH));
 		
-		
-			 
-		// This is a "switch" evaluating if the new State/Action would have a good/bad Reward
+		// Here we move the units or execute the actions.	 
+		// Later is a "switch" evaluating if the new State/Action would have a good/bad Reward
 		// Here you must enter all the rewards of learning
 		
 		if (isValid(posX, posY)) {
+			unit.move(new Position(posX*BOX_LENGTH, posY*BOX_LENGTH));
+			
 			state = new StarcraftState(posX, posY, game.mapWidth(), game.mapHeight());
 			if(isFinalState()) {
 				reward = 1000;
 			}
 		} else {
-			reward = -1;
+			reward = -100;
 		}
 
 		return reward;
@@ -125,14 +114,28 @@ public class StarcraftEnvironment implements Environment{
 	
 	// The position x,y is valid
 	private boolean isValid(int x, int y) {
-		Position P = new Position(x,y);
-		
-		if(P.isValid()) {
-			return (0 <= x) && (x < game.mapWidth()) &&
-					(0 <= y) && (y < game.mapHeight());
-		} else {
+		if((0 <= x) && (x < game.mapWidth()) && (0 <= y) && (y < game.mapHeight())){
+			boolean dontCol = true;
+			int i = 0;
+			Unit m;
+			
+			// Check if collide with other units
+			while(dontCol && i < game.getAllUnits().size()){
+				m = game.getAllUnits().get(i);
+				if(itsInside(m.getTop(),m.getBottom(),m.getRight(),m.getLeft(), x*BOX_LENGTH, y*BOX_LENGTH)) {
+					dontCol = false;
+				}
+				i++;
+			}
+			
+			return dontCol;
+		}else{
 			return false;
 		}
+	}
+
+	private boolean itsInside(int top, int bottom, int right, int left, int x, int y) {		
+		return (left<=x) && (x<=right) && (bottom>=y) && (y>=top);	
 	}
 
 }
